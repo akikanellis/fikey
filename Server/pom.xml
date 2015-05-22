@@ -19,6 +19,11 @@
             <version>${dropwizard.version}</version>
         </dependency>
         <dependency>
+            <groupId>io.dropwizard</groupId>
+            <artifactId>dropwizard-views</artifactId>
+            <version>${dropwizard.version}</version>
+        </dependency>
+        <dependency>
             <groupId>com.yubico</groupId>
             <artifactId>u2flib-server-core</artifactId>
             <version>${yubicou2f.version}</version>
