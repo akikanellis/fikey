@@ -1,6 +1,6 @@
 package com.github.dkanellis.fikey;
 
-import com.github.dkanellis.fikey.resources.FiKeyResource;
+import com.github.dkanellis.fikey.views.FiKeyResource;
 import io.dropwizard.Application;
 import io.dropwizard.assets.AssetsBundle;
 import io.dropwizard.setup.Bootstrap;
@@ -22,11 +22,12 @@ public class FiKeyApplication extends Application<FiKeyConfiguration> {
 
     @Override
     public void initialize(Bootstrap<FiKeyConfiguration> bootstrap) {
-        bootstrap.addBundle(new AssetsBundle("/assets", "/", "index.html", "html"));
+        bootstrap.addBundle(new AssetsBundle("/assets", "/", "index.html", "static"));
     }
 
     @Override
     public void run(FiKeyConfiguration fiKeyConfiguration, Environment environment) throws Exception {
+        environment.jersey().setUrlPattern("/api/*");
         final FiKeyResource resource = new FiKeyResource();
         environment.jersey().register(resource);
     }
