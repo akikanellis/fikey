@@ -63,7 +63,8 @@ form {
 }
 
 .device-info {
-    white-space: pre-line;
+    width: 1000px;
+    word-wrap: break-word;
     text-align: left;
 }
 

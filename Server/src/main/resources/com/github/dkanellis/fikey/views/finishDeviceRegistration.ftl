@@ -12,6 +12,7 @@
                 <br>
                 <pre>${registrationInfo}</pre>
             </div>
+            <a href="/index.html" class="btn green">Back to home page</a>
         </article>
     </div>
 </body>
