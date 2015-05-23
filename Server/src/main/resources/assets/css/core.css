@@ -54,11 +54,17 @@ form, input {
 form {
     width: 300px;
 }
+
 .key-prompt {
     background-color: #f7f7f7;
     padding: 20px 25px 30px;
     margin: 0 auto 25px;
     width: 304px;
+}
+
+.device-info {
+    white-space: pre-line;
+    text-align: left;
 }
 
 /* header/copyright link */

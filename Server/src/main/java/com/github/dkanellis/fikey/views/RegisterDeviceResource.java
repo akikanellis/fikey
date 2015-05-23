@@ -40,12 +40,13 @@ public class RegisterDeviceResource {
 
     @Path("finishDeviceRegistration")
     @POST
-    public String finishRegistration(@FormParam("tokenResponse") String response, @FormParam("username") String username) {
+    public View finishDeviceRegistration(@FormParam("tokenResponse") String response, @FormParam("username") String
+            username) {
         RegisterResponse registerResponse = RegisterResponse.fromJson(response);
         RegisterRequestData registerRequest
                 = RegisterRequestData.fromJson(storage.removeRequest(registerResponse.getRequestId()));
         DeviceRegistration registration = u2fManager.finishRegistration(registerRequest, registerResponse);
         storage.addDeviceToUser(username, registration.getKeyHandle(), registration.toJson());
-        return String.format(SUCCESSFUL_REGISTRATION_MESSAGE, registration);
+        return new FinishDeviceRegistrationView(username, registration);
     }
 }
