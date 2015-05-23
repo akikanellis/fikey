@@ -1,10 +1,11 @@
 package com.github.dkanellis.fikey;
 
-import com.github.dkanellis.fikey.resources.FiKeyResource;
+import com.github.dkanellis.fikey.views.RegisterDeviceResource;
 import io.dropwizard.Application;
 import io.dropwizard.assets.AssetsBundle;
 import io.dropwizard.setup.Bootstrap;
 import io.dropwizard.setup.Environment;
+import io.dropwizard.views.ViewBundle;
 
 /**
  * @author Dimitris Kanellis
@@ -22,12 +23,15 @@ public class FiKeyApplication extends Application<FiKeyConfiguration> {
 
     @Override
     public void initialize(Bootstrap<FiKeyConfiguration> bootstrap) {
-        bootstrap.addBundle(new AssetsBundle("/assets", "/", "index.html", "html"));
+        bootstrap.addBundle(new ViewBundle<>());
+        ;
+        bootstrap.addBundle(new AssetsBundle("/assets", "/", "index.html", "static"));
     }
 
     @Override
     public void run(FiKeyConfiguration fiKeyConfiguration, Environment environment) throws Exception {
-        final FiKeyResource resource = new FiKeyResource();
+        environment.jersey().setUrlPattern("/api/*");
+        final RegisterDeviceResource resource = new RegisterDeviceResource();
         environment.jersey().register(resource);
     }
 }

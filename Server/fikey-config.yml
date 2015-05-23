@@ -1,7 +1,11 @@
 server:
-  type: simple
-  applicationContextPath: /
-  rootPath: /api/*server
-  connector:
-    type: http
-    port: 8080
+  rootPath: /api/*
+  applicationConnectors:
+    - type: https
+      port: 8080
+      keyStorePath: server/src/main/resources/keystores/keystore.jks
+      keyStorePassword: p@ssw0rd
+      validateCerts: false
+
+logging:
+  level: INFO
