@@ -3,7 +3,7 @@
 <title></title>
 <link rel="stylesheet" href="/css/core.css">
 
-<script src="/u2f-api.js"></script>
+<script src="/js/u2f-api.js"></script>
 
 <script>
 var request = ${data};
