@@ -24,7 +24,7 @@ setTimeout(function() {
 </head>
     <body>
     <p>Touch your U2F token.</p>
-        <form method="POST" action="/finishDeviceRegistration" id="form" onsubmit="return false;">
+        <form method="POST" action="/api/finishDeviceRegistration" id="form" onsubmit="return false;">
             <input type="hidden" name="username" value="${username}"/>
             <input type="hidden" name="tokenResponse" id="tokenResponse"/>
         </form>
