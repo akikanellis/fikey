@@ -35,7 +35,7 @@ public class AuthenticateDeviceResource {
     public View startDeviceAuthentication(@QueryParam("username") String username, @QueryParam("password") String password) throws NoEligableDevicesException {
         AuthenticateRequestData authenticateRequestData = u2fManager.startAuthentication(APP_ID, storage.getDevicesFromUser(username));
         storage.addRequest(authenticateRequestData.getRequestId(), authenticateRequestData.toJson());
-        return new AuthenticateDeviceView(username, authenticateRequestData.toJson());
+        return new StartDeviceAuthenticationView(username, authenticateRequestData.toJson());
     }
 
     @Path("finishDeviceAuthentication")

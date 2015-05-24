@@ -35,7 +35,7 @@ public class RegisterDeviceResource {
     public View startDeviceRegistration(@QueryParam("username") String username, @QueryParam("password") String password) {
         RegisterRequestData registerRequest = u2fManager.startRegistration(APP_ID, storage.getDevicesFromUser(username));
         storage.addRequest(registerRequest.getRequestId(), registerRequest.toJson());
-        return new RegisterDeviceView(username, registerRequest.toJson());
+        return new StartDeviceRegistrationView(username, registerRequest.toJson());
     }
 
     @Path("finishDeviceRegistration")
