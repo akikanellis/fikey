@@ -62,10 +62,14 @@ form {
     width: 304px;
 }
 
-.device-info {
+.device {
     width: 1000px;
     word-wrap: break-word;
     text-align: left;
+}
+
+.device-info {
+    background-color: #f7f7f7;
 }
 
 /* header/copyright link */
