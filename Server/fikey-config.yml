@@ -3,7 +3,7 @@ server:
   applicationConnectors:
     - type: https
       port: 8080
-      keyStorePath: server/src/main/resources/keystores/keystore.jks
+      keyStorePath: keystore.jks
       keyStorePassword: p@ssw0rd
       validateCerts: false
 
