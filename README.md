@@ -33,6 +33,10 @@ Start the server running the command:
 
 `java -jar fikey-x.x.x.jar server fikey-config.yml`
 
+Enter the website by pointing a U2F compatible browser to:
+
+`https://localhost:8080/`
+
 Stop the server on the terminal:
 
 `Ctrl + C`
