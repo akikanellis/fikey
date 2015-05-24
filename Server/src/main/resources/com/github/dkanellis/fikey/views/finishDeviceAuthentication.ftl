@@ -6,10 +6,10 @@
 <body>
 <div class="v-wrap">
     <article class="v-box">
-        <h1>Login for user ${username} was successful!</h1>
+        <h1>${header}</h1>
 
         <div class="device-info">
-            Device used:
+            ${messageTitle}
             <br>
             <pre>${loginInfo}</pre>
         </div>

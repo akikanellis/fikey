@@ -7,13 +7,13 @@ import static com.google.common.base.Preconditions.checkNotNull;
 /**
  * @author Dimitris
  */
-public class DeviceAuthenticationView extends View {
+public class AuthenticateDeviceView extends View {
 
     private final String username;
     private final String data;
 
-    public DeviceAuthenticationView(String username, String data) {
-        super("startDeviceAuthentication.ftl");
+    public AuthenticateDeviceView(String username, String data) {
+        super("authenticateDevice.ftl");
         this.username = checkNotNull(username);
         this.data = checkNotNull(data);
     }
