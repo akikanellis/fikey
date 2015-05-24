@@ -6,12 +6,12 @@
 <body>
 <div class="v-wrap">
     <article class="v-box">
-        <h1>Device registration for user ${username} was successful!</h1>
+        <h1>${header}</h1>
 
         <div class="device-info">
-            Device info:
+            ${messageTitle}
             <br>
-            <pre>${registrationInfo}</pre>
+            <pre>${loginInfo}</pre>
         </div>
         <a href="/index.html" class="btn green">Back to home page</a>
     </article>
