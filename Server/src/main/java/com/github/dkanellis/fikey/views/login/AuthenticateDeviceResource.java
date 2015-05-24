@@ -2,6 +2,7 @@ package com.github.dkanellis.fikey.views.login;
 
 
 import com.github.dkanellis.fikey.storage.DataStorage;
+import com.github.dkanellis.fikey.utils.Statics;
 import com.yubico.u2f.U2F;
 import com.yubico.u2f.data.DeviceRegistration;
 import com.yubico.u2f.data.messages.AuthenticateRequestData;
@@ -20,8 +21,6 @@ import javax.ws.rs.core.MediaType;
 @Produces(MediaType.TEXT_HTML)
 public class AuthenticateDeviceResource {
 
-    public static final String APP_ID = "https://localhost:8080";
-
     private final DataStorage storage;
     private U2F u2fManager;
 
@@ -33,7 +32,7 @@ public class AuthenticateDeviceResource {
     @Path("startDeviceAuthentication")
     @GET
     public View startDeviceAuthentication(@QueryParam("username") String username, @QueryParam("password") String password) throws NoEligableDevicesException {
-        AuthenticateRequestData authenticateRequestData = u2fManager.startAuthentication(APP_ID, storage.getDevicesFromUser(username));
+        AuthenticateRequestData authenticateRequestData = u2fManager.startAuthentication(Statics.APP_ID, storage.getDevicesFromUser(username));
         storage.addRequest(authenticateRequestData.getRequestId(), authenticateRequestData.toJson());
         return new StartDeviceAuthenticationView(username, authenticateRequestData.toJson());
     }

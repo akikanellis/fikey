@@ -2,6 +2,7 @@ package com.github.dkanellis.fikey.views.register;
 
 
 import com.github.dkanellis.fikey.storage.DataStorage;
+import com.github.dkanellis.fikey.utils.Statics;
 import com.yubico.u2f.U2F;
 import com.yubico.u2f.data.DeviceRegistration;
 import com.yubico.u2f.data.messages.RegisterRequestData;
@@ -18,8 +19,6 @@ import javax.ws.rs.core.MediaType;
 @Produces(MediaType.TEXT_HTML)
 public class RegisterDeviceResource {
 
-    public static final String APP_ID = "https://localhost:8080";
-
     private final DataStorage storage;
     private U2F u2fManager;
 
@@ -31,7 +30,7 @@ public class RegisterDeviceResource {
     @Path("startDeviceRegistration")
     @GET
     public View startDeviceRegistration(@QueryParam("username") String username, @QueryParam("password") String password) {
-        RegisterRequestData registerRequest = u2fManager.startRegistration(APP_ID, storage.getDevicesFromUser(username));
+        RegisterRequestData registerRequest = u2fManager.startRegistration(Statics.APP_ID, storage.getDevicesFromUser(username));
         storage.addRequest(registerRequest.getRequestId(), registerRequest.toJson());
         return new StartDeviceRegistrationView(username, registerRequest.toJson());
     }
