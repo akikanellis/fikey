@@ -15,7 +15,7 @@ import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;
 
 /**
- * @author Dimitris
+ * @author Dimitris Kanellis
  */
 @Path("/")
 @Produces(MediaType.TEXT_HTML)
