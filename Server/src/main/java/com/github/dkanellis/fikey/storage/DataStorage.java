@@ -10,42 +10,51 @@ import java.util.*;
 /**
  * @author Dimitris
  */
-public class DataStorage<T, K, V> {
+public class DataStorage {
 
-    private LoadingCache<T, Map<K, V>> users;
-    private Map<K, V> requests;
+    private static DataStorage INSTANCE = new DataStorage();
 
-    public DataStorage() {
+    private LoadingCache<String, Map<String, String>> users;
+    private Map<String, String> requests;
+
+    private DataStorage() {
+    }
+
+    public static DataStorage getInstance() {
+        return INSTANCE;
+    }
+
+    public void init() {
         this.requests = new HashMap<>();
-        this.users = CacheBuilder.newBuilder().build(new CacheLoader<T, Map<K, V>>() {
+        this.users = CacheBuilder.newBuilder().build(new CacheLoader<String, Map<String, String>>() {
             @Override
-            public Map<K, V> load(T key) throws Exception {
+            public Map<String, String> load(String key) throws Exception {
                 return new HashMap<>();
             }
         });
     }
 
-    public void addRequest(K key, V value) {
+    public void addRequest(String key, String value) {
         requests.put(key, value);
     }
 
-    public V removeRequest(K key) {
+    public String removeRequest(String key) {
         return requests.remove(key);
     }
 
-    public void addDeviceToUser(T username, K key, V value) {
+    public void addDeviceToUser(String username, String key, String value) {
         users.getUnchecked(username).put(key, value);
     }
 
-    public Iterable<DeviceRegistration> getDevicesFromUser(T username) {
+    public Iterable<DeviceRegistration> getDevicesFromUser(String username) {
         List<DeviceRegistration> registrations = new ArrayList<>();
-        for (V serialized : getSerializedDevices(username)) {
+        for (String serialized : getSerializedDevices(username)) {
             registrations.add(DeviceRegistration.fromJson((String) serialized));
         }
         return registrations;
     }
 
-    private Collection<V> getSerializedDevices(T username) {
+    private Collection<String> getSerializedDevices(String username) {
         return users.getUnchecked(username).values();
     }
 

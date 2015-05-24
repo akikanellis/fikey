@@ -1,5 +1,6 @@
 package com.github.dkanellis.fikey;
 
+import com.github.dkanellis.fikey.storage.DataStorage;
 import com.github.dkanellis.fikey.views.RegisterDeviceResource;
 import io.dropwizard.Application;
 import io.dropwizard.assets.AssetsBundle;
@@ -23,6 +24,7 @@ public class FiKeyApplication extends Application<FiKeyConfiguration> {
 
     @Override
     public void initialize(Bootstrap<FiKeyConfiguration> bootstrap) {
+        DataStorage.getInstance().init();
         bootstrap.addBundle(new ViewBundle<>());
         ;
         bootstrap.addBundle(new AssetsBundle("/assets", "/", "index.html", "static"));

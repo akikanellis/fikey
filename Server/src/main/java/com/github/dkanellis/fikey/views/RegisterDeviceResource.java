@@ -20,13 +20,13 @@ public class RegisterDeviceResource {
 
     public static final String APP_ID = "https://localhost:8080";
 
-    private final static String SUCCESSFUL_REGISTRATION_MESSAGE = "Successfully registered device: <pre>%s</pre>";
+    private final static String SUCCESSFUL_REGISTRATION_MESSAGE = "Successfully registered device: <pre>%s</pre>"; // TODO remove
 
-    private final DataStorage<String, String, String> storage;
+    private final DataStorage storage;
     private U2F u2fManager;
 
     public RegisterDeviceResource() {
-        this.storage = new DataStorage<>();
+        this.storage = DataStorage.getInstance();
         this.u2fManager = new U2F();
     }
 
