@@ -5,7 +5,7 @@ import io.dropwizard.views.View;
 import org.apache.commons.lang3.StringEscapeUtils;
 
 /**
- * @author Dimitris
+ * @author Dimitris Kanellis
  */
 public class FinishDeviceRegistrationView extends View {
 

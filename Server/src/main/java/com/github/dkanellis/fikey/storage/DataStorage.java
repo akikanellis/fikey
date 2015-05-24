@@ -8,7 +8,7 @@ import com.yubico.u2f.data.DeviceRegistration;
 import java.util.*;
 
 /**
- * @author Dimitris
+ * @author Dimitris Kanellis
  */
 public class DataStorage {
 

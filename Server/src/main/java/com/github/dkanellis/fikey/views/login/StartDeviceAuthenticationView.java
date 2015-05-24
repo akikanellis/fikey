@@ -5,7 +5,7 @@ import io.dropwizard.views.View;
 import static com.google.common.base.Preconditions.checkNotNull;
 
 /**
- * @author Dimitris
+ * @author Dimitris Kanellis
  */
 public class StartDeviceAuthenticationView extends View {
 
