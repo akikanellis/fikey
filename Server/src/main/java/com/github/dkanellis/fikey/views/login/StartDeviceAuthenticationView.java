@@ -13,7 +13,7 @@ public class StartDeviceAuthenticationView extends View {
     private final String data;
 
     public StartDeviceAuthenticationView(String username, String data) {
-        super("authenticateDevice.ftl");
+        super("startDeviceAuthentication.ftl");
         this.username = checkNotNull(username);
         this.data = checkNotNull(data);
     }

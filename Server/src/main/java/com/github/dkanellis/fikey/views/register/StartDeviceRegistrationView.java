@@ -13,7 +13,7 @@ public class StartDeviceRegistrationView extends View {
     private final String data;
 
     public StartDeviceRegistrationView(String username, String data) {
-        super("registerDevice.ftl");
+        super("startDeviceRegistration.ftl");
         this.username = checkNotNull(username);
         this.data = checkNotNull(data);
     }
