@@ -1,4 +1,4 @@
-package com.github.dkanellis.fikey.views;
+package com.github.dkanellis.fikey.views.register;
 
 import com.yubico.u2f.data.DeviceRegistration;
 import io.dropwizard.views.View;

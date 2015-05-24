@@ -8,14 +8,16 @@
     <script>
         var request = ${data};
         setTimeout(function() {
-            u2f.sign(request.authenticateRequests,
+            u2f.register(request.registerRequests, request.authenticateRequests,
             function(data) {
+                var form = document.getElementById('form');
+                var reg = document.getElementById('tokenResponse');
                 if(data.errorCode) {
-                    alert("U2F failed with error code: " + data.errorCode);
+                    alert("U2F failed with error: " + data.errorCode);
                     return;
                 }
-                document.getElementById('tokenResponse').value = JSON.stringify(data);
-                document.getElementById('form').submit();
+                reg.value=JSON.stringify(data);
+                form.submit();
             });
         }, 1000);
 
@@ -36,9 +38,9 @@
                 <br>
                 If it doesn't, remove and re-insert it.
             </div>
-            <form method="POST" action="/api/finishDeviceAuthentication" id="form">
+            <form method="POST" action="/api/finishDeviceRegistration" id="form" onsubmit="return false;">
+                <input type="hidden" name="username" value="${username}"/>
                 <input type="hidden" name="tokenResponse" id="tokenResponse"/>
-                <input type="hidden" name="username" id="username" value="${username}"/>
             </form>
         </div>
     </article>
