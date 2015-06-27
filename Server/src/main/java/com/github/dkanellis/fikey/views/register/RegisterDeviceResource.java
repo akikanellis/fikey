@@ -1,9 +1,11 @@
 package com.github.dkanellis.fikey.views.register;
 
 
+import com.github.dkanellis.fikey.api.Authenticator;
 import com.github.dkanellis.fikey.api.FiKeyAuth;
 import com.github.dkanellis.fikey.api.exceptions.InvalidPasswordException;
 import com.github.dkanellis.fikey.api.exceptions.UserAlreadyExistsException;
+import com.github.dkanellis.fikey.utils.Statics;
 import io.dropwizard.views.View;
 
 import javax.ws.rs.*;
@@ -16,10 +18,10 @@ import javax.ws.rs.core.MediaType;
 @Produces(MediaType.TEXT_HTML)
 public class RegisterDeviceResource {
 
-    private FiKeyAuth fiKeyAuth;
+    private Authenticator fiKeyAuth;
 
     public RegisterDeviceResource() {
-        this.fiKeyAuth = new FiKeyAuth();
+        this.fiKeyAuth = new FiKeyAuth(Statics.APP_ID);
     }
 
 
