@@ -1,7 +1,7 @@
 package com.github.dkanellis.fikey.views.login;
 
 
-import com.github.dkanellis.fikey.storage.DataStorage;
+import com.github.dkanellis.fikey.api.storage.DataStorage;
 import com.github.dkanellis.fikey.utils.Statics;
 import com.yubico.u2f.U2F;
 import com.yubico.u2f.data.DeviceRegistration;

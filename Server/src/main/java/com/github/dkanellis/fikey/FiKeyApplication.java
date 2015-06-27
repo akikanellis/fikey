@@ -1,6 +1,6 @@
 package com.github.dkanellis.fikey;
 
-import com.github.dkanellis.fikey.storage.DataStorage;
+import com.github.dkanellis.fikey.api.storage.DataStorage;
 import com.github.dkanellis.fikey.views.login.AuthenticateDeviceResource;
 import com.github.dkanellis.fikey.views.register.RegisterDeviceResource;
 import io.dropwizard.Application;

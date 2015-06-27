@@ -1,12 +1,9 @@
 package com.github.dkanellis.fikey.views.register;
 
 
-import com.github.dkanellis.fikey.storage.DataStorage;
-import com.github.dkanellis.fikey.utils.Statics;
-import com.yubico.u2f.U2F;
-import com.yubico.u2f.data.DeviceRegistration;
-import com.yubico.u2f.data.messages.RegisterRequestData;
-import com.yubico.u2f.data.messages.RegisterResponse;
+import com.github.dkanellis.fikey.api.FiKeyAuth;
+import com.github.dkanellis.fikey.api.exceptions.InvalidPasswordException;
+import com.github.dkanellis.fikey.api.exceptions.UserAlreadyExistsException;
 import io.dropwizard.views.View;
 
 import javax.ws.rs.*;
@@ -19,31 +16,33 @@ import javax.ws.rs.core.MediaType;
 @Produces(MediaType.TEXT_HTML)
 public class RegisterDeviceResource {
 
-    private final DataStorage storage;
-    private U2F u2fManager;
+    private FiKeyAuth fiKeyAuth;
 
     public RegisterDeviceResource() {
-        this.storage = DataStorage.getInstance();
-        this.u2fManager = new U2F();
+        this.fiKeyAuth = new FiKeyAuth();
     }
+
 
     @Path("startDeviceRegistration")
     @GET
     public View startDeviceRegistration(@QueryParam("username") String username, @QueryParam("password") String password) {
-        RegisterRequestData registerRequest = u2fManager.startRegistration(Statics.APP_ID, storage.getDevicesFromUser(username));
-        storage.addRequest(registerRequest.getRequestId(), registerRequest.toJson());
-        return new StartDeviceRegistrationView(username, registerRequest.toJson());
+        try {
+            String request = fiKeyAuth.startDeviceRegistration(username, password);
+            return new StartDeviceRegistrationView(username, request);
+        } catch (UserAlreadyExistsException e) {
+            e.printStackTrace(); // TODO show different view
+            return new StartDeviceRegistrationView(username, "N/A");
+        } catch (InvalidPasswordException e) {
+            e.printStackTrace(); // TODO show different view
+            return new StartDeviceRegistrationView(username, "N/A");
+        }
     }
 
     @Path("finishDeviceRegistration")
     @POST
-    public View finishDeviceRegistration(@FormParam("tokenResponse") String response, @FormParam("username") String
-            username) {
-        RegisterResponse registerResponse = RegisterResponse.fromJson(response);
-        RegisterRequestData registerRequest
-                = RegisterRequestData.fromJson(storage.removeRequest(registerResponse.getRequestId()));
-        DeviceRegistration registration = u2fManager.finishRegistration(registerRequest, registerResponse);
-        storage.addDeviceToUser(username, registration.getKeyHandle(), registration.toJson());
-        return new FinishDeviceRegistrationView(username, registration);
+    public View finishDeviceRegistration(@FormParam("tokenResponse") String response,
+                                         @FormParam("username") String username) {
+        String registrationInfo = fiKeyAuth.finishDeviceRegistration(response, username);
+        return new FinishDeviceRegistrationView(username, registrationInfo);
     }
 }
