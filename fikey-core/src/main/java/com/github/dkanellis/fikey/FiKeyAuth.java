@@ -1,6 +1,8 @@
 package com.github.dkanellis.fikey;
 
+import com.github.dkanellis.fikey.exceptions.DeviceCompromisedException;
 import com.github.dkanellis.fikey.exceptions.InvalidPasswordException;
+import com.github.dkanellis.fikey.exceptions.NoEligibleDevicesException;
 import com.github.dkanellis.fikey.exceptions.UserAlreadyExistsException;
 import com.github.dkanellis.fikey.storage.DataStorage;
 import com.yubico.u2f.U2F;
@@ -9,8 +11,6 @@ import com.yubico.u2f.data.messages.AuthenticateRequestData;
 import com.yubico.u2f.data.messages.AuthenticateResponse;
 import com.yubico.u2f.data.messages.RegisterRequestData;
 import com.yubico.u2f.data.messages.RegisterResponse;
-import com.yubico.u2f.exceptions.DeviceCompromisedException;
-import com.yubico.u2f.exceptions.NoEligableDevicesException;
 
 /**
  * @author Dimitris
@@ -58,14 +58,21 @@ public class FiKeyAuth implements Authenticator {
     }
 
     @Override
-    public String startDeviceAuthentication(String username, String password) throws NoEligableDevicesException {
+    public String startDeviceAuthentication(String username, String password) throws NoEligibleDevicesException {
 
         Iterable<DeviceRegistration> userDevices = storage.getDevicesFromUser(username);
-        AuthenticateRequestData authenticateRequestData
-                = u2fManager.startAuthentication(appId, userDevices);
+        AuthenticateRequestData authenticateRequestData = getAuthenticateRequestData(userDevices);
         storage.addRequest(authenticateRequestData.getRequestId(), authenticateRequestData.toJson());
 
         return authenticateRequestData.toString();
+    }
+
+    private AuthenticateRequestData getAuthenticateRequestData(Iterable<DeviceRegistration> userDevices) throws NoEligibleDevicesException {
+        try {
+            return u2fManager.startAuthentication(appId, userDevices);
+        } catch (com.yubico.u2f.exceptions.NoEligableDevicesException e) {
+            throw new NoEligibleDevicesException(e);
+        }
     }
 
     @Override
@@ -74,16 +81,21 @@ public class FiKeyAuth implements Authenticator {
         AuthenticateRequestData authenticateRequest = AuthenticateRequestData.fromJson(storage.removeRequest(authenticateResponse.getRequestId()));
 
         DeviceRegistration registration;
+        registration = getDeviceRegistration(username, authenticateResponse, authenticateRequest);
+        storage.addDeviceToUser(username, registration.getKeyHandle(), registration.toJson());
+
+        return registration.toString();
+    }
+
+    private DeviceRegistration getDeviceRegistration(String username, AuthenticateResponse authenticateResponse, AuthenticateRequestData authenticateRequest) throws DeviceCompromisedException {
+        DeviceRegistration registration;
         try {
             registration = u2fManager.finishAuthentication(authenticateRequest, authenticateResponse, storage.getDevicesFromUser(username));
-            storage.addDeviceToUser(username, registration.getKeyHandle(), registration.toJson());
-
-            return registration.toString();
-        } catch (DeviceCompromisedException e) {
+            return registration;
+        } catch (com.yubico.u2f.exceptions.DeviceCompromisedException e) {
             registration = e.getDeviceRegistration();
             storage.addDeviceToUser(username, registration.getKeyHandle(), registration.toJson());
-
-            throw e;
+            throw new DeviceCompromisedException(e);
         }
     }
 

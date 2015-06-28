@@ -1,9 +1,9 @@
 package com.github.dkanellis.fikey;
 
+import com.github.dkanellis.fikey.exceptions.DeviceCompromisedException;
 import com.github.dkanellis.fikey.exceptions.InvalidPasswordException;
+import com.github.dkanellis.fikey.exceptions.NoEligibleDevicesException;
 import com.github.dkanellis.fikey.exceptions.UserAlreadyExistsException;
-import com.yubico.u2f.exceptions.DeviceCompromisedException;
-import com.yubico.u2f.exceptions.NoEligableDevicesException;
 
 /**
  * @author Dimitris
@@ -14,7 +14,7 @@ public interface Authenticator {
 
     String finishDeviceRegistration(String response, String username);
 
-    String startDeviceAuthentication(String username, String password) throws NoEligableDevicesException;
+    String startDeviceAuthentication(String username, String password) throws NoEligibleDevicesException;
 
     String finishDeviceAuthentication(String response, String username) throws DeviceCompromisedException;
 }

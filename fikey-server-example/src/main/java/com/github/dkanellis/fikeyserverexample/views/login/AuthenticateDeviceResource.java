@@ -3,9 +3,9 @@ package com.github.dkanellis.fikeyserverexample.views.login;
 
 import com.github.dkanellis.fikey.Authenticator;
 import com.github.dkanellis.fikey.FiKeyAuth;
+import com.github.dkanellis.fikey.exceptions.DeviceCompromisedException;
+import com.github.dkanellis.fikey.exceptions.NoEligibleDevicesException;
 import com.github.dkanellis.fikeyserverexample.utils.Statics;
-import com.yubico.u2f.exceptions.DeviceCompromisedException;
-import com.yubico.u2f.exceptions.NoEligableDevicesException;
 import io.dropwizard.views.View;
 
 import javax.ws.rs.*;
@@ -30,7 +30,7 @@ public class AuthenticateDeviceResource {
         try {
             String authenticateRequestData = fiKeyAuth.startDeviceAuthentication(username, password);
             return new StartDeviceAuthenticationView(username, authenticateRequestData);
-        } catch (NoEligableDevicesException e) {
+        } catch (NoEligibleDevicesException e) {
             e.printStackTrace(); // TODO add views
             return new StartDeviceAuthenticationView(username, "N/A");
         }
