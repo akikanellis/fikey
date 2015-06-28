@@ -1,5 +1,4 @@
 .idea
-FiKey.iml
-Server/Server.iml
+*.iml
 Server/target
 Server/dependency-reduced-pom.xml

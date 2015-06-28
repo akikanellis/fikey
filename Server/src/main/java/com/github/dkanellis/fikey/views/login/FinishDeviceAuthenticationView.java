@@ -1,8 +1,6 @@
 package com.github.dkanellis.fikey.views.login;
 
-import com.yubico.u2f.data.DeviceRegistration;
 import io.dropwizard.views.View;
-import org.apache.commons.lang3.StringEscapeUtils;
 
 /**
  * @author Dimitris Kanellis
@@ -14,11 +12,10 @@ public class FinishDeviceAuthenticationView extends View {
     private final String header;
     private final String messageTitle;
 
-    public FinishDeviceAuthenticationView(String username, DeviceRegistration registration) {
+    public FinishDeviceAuthenticationView(String username, String loginInfo, boolean compromised) {
         super("finishDeviceAuthentication.ftl");
         this.username = username;
-        this.loginInfo = StringEscapeUtils.escapeHtml4(registration.toString());
-        final boolean compromised = registration.isCompromised();
+        this.loginInfo = loginInfo;
         this.header = compromised ?
                 "Authentication for user " + username + " failed, the device has been possibly compromised." :
                 "Authentication for user " + username + "  was successful!";
