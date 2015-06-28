@@ -9,11 +9,12 @@
     <version>0.2.4</version>
     <packaging>pom</packaging>
 
-    <name>${project.artifactId}-${project.version}</name>
+    <name>FiKey parent</name>
 
     <modules>
-        <module>u2flib-server-core</module>
-        <module>Server</module>
+        <module>yubico-u2flib-server-core</module>
+        <module>fikey-core</module>
+        <module>fikey-server-example</module>
     </modules>
 
 

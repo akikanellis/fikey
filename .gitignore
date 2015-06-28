@@ -1,4 +1,6 @@
 .idea
 *.iml
-Server/target
-Server/dependency-reduced-pom.xml
+fikey-server-example/target
+fikey-server-example/dependency-reduced-pom.xml
+yubico-u2flib-server-core/target
+yubico-u2flib-server-core/dependency-reduced-pom.xml
