@@ -29,10 +29,16 @@
             <version>${dropwizard.version}</version>
         </dependency>
         <dependency>
-            <groupId>com.yubico</groupId>
-            <artifactId>u2flib-server-core</artifactId>
-            <version>${yubicou2f.version}</version>
+            <groupId>org.bouncycastle</groupId>
+            <artifactId>bcpkix-jdk15on</artifactId>
+            <version>1.51</version>
+            <scope>test</scope>
         </dependency>
+        <!--<dependency>-->
+        <!--<groupId>com.yubico</groupId>-->
+        <!--<artifactId>u2flib-server-core</artifactId>-->
+        <!--<version>${yubicou2f.version}</version>-->
+        <!--</dependency>-->
     </dependencies>
 
     <properties>
