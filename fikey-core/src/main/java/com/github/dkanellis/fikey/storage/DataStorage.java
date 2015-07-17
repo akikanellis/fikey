@@ -4,17 +4,19 @@ import com.google.common.cache.CacheBuilder;
 import com.google.common.cache.CacheLoader;
 import com.google.common.cache.LoadingCache;
 import com.yubico.u2f.data.DeviceRegistration;
+import com.yubico.u2f.data.messages.json.Persistable;
 
 import java.util.*;
 
 /**
  * @author Dimitris Kanellis
  */
-public class DataStorage {
+public class DataStorage implements UserStorage {
 
     private static DataStorage INSTANCE = new DataStorage();
 
-    private LoadingCache<String, Map<String, String>> users;
+    private List<FidoUser> users;
+    private LoadingCache<String, Map<String, String>> usersOld;
     private Map<String, String> requests;
 
     private DataStorage() {
@@ -26,7 +28,8 @@ public class DataStorage {
 
     public void init() {
         this.requests = new HashMap<>();
-        this.users = CacheBuilder.newBuilder().build(new CacheLoader<String, Map<String, String>>() {
+        this.users = new ArrayList<>();
+        this.usersOld = CacheBuilder.newBuilder().build(new CacheLoader<String, Map<String, String>>() {
             @Override
             public Map<String, String> load(String key) throws Exception {
                 return new HashMap<>();
@@ -34,16 +37,18 @@ public class DataStorage {
         });
     }
 
-    public void addRequest(String key, String value) {
-        requests.put(key, value);
+    @Override
+    public void addRequest(Persistable request) {
+        requests.put(request.getRequestId(), request.toJson());
     }
 
-    public String removeRequest(String key) {
-        return requests.remove(key);
+    @Override
+    public String removeRequest(Persistable response) {
+        return requests.remove(response.getRequestId());
     }
 
     public void addDeviceToUser(String username, String key, String value) {
-        users.getUnchecked(username).put(key, value);
+        usersOld.getUnchecked(username).put(key, value);
     }
 
     public Iterable<DeviceRegistration> getDevicesFromUser(String username) {
@@ -55,8 +60,23 @@ public class DataStorage {
     }
 
     private Collection<String> getSerializedDevices(String username) {
-        return users.getUnchecked(username).values();
+        return usersOld.getUnchecked(username).values();
     }
 
 
+    @Override
+    public boolean hasUser(FidoUser user) {
+        return users.contains(user);
+    }
+
+    @Override
+    public void addUser(String username, String password) {
+        FidoUser user = new WebsiteUser(username, password);
+        users.add(user);
+    }
+
+    @Override
+    public void addDeviceToUser(String username, DeviceRegistration device) {
+
+    }
 }

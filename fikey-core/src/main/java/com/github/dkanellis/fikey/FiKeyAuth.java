@@ -41,7 +41,7 @@ public class FiKeyAuth implements Authenticator {
 
         Iterable<DeviceRegistration> userDevices = storage.getDevicesFromUser(username);
         RegisterRequestData registerRequest = u2fManager.startRegistration(appId, userDevices);
-        storage.addRequest(registerRequest.getRequestId(), registerRequest.toJson());
+        storage.addRequest(registerRequest);
 
         return registerRequest.toJson();
     }
@@ -49,8 +49,7 @@ public class FiKeyAuth implements Authenticator {
     @Override
     public String finishDeviceRegistration(String response, String username) {
         RegisterResponse registerResponse = RegisterResponse.fromJson(response);
-        RegisterRequestData registerRequest
-                = RegisterRequestData.fromJson(storage.removeRequest(registerResponse.getRequestId()));
+        RegisterRequestData registerRequest = RegisterRequestData.fromJson(storage.removeRequest(registerResponse));
         DeviceRegistration registration = u2fManager.finishRegistration(registerRequest, registerResponse);
         storage.addDeviceToUser(username, registration.getKeyHandle(), registration.toJson());
 
@@ -62,7 +61,7 @@ public class FiKeyAuth implements Authenticator {
 
         Iterable<DeviceRegistration> userDevices = storage.getDevicesFromUser(username);
         AuthenticateRequestData authenticateRequestData = getAuthenticateRequestData(userDevices);
-        storage.addRequest(authenticateRequestData.getRequestId(), authenticateRequestData.toJson());
+        storage.addRequest(authenticateRequestData);
 
         return authenticateRequestData.toString();
     }
@@ -78,7 +77,7 @@ public class FiKeyAuth implements Authenticator {
     @Override
     public String finishDeviceAuthentication(String response, String username) throws DeviceCompromisedException {
         AuthenticateResponse authenticateResponse = AuthenticateResponse.fromJson(response);
-        AuthenticateRequestData authenticateRequest = AuthenticateRequestData.fromJson(storage.removeRequest(authenticateResponse.getRequestId()));
+        AuthenticateRequestData authenticateRequest = AuthenticateRequestData.fromJson(storage.removeRequest(authenticateResponse));
 
         DeviceRegistration registration;
         registration = getDeviceRegistration(username, authenticateResponse, authenticateRequest);
