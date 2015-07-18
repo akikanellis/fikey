@@ -78,7 +78,7 @@ public class FiKeyAuth implements Authenticator {
     public void authenticateUser(String username, String password) throws UserDoesNotExistException, InvalidPasswordException {
         U2fUser user = users.getFromUsername(username);
         if (!user.isPasswordCorrect(password)) {
-            throw new InvalidPasswordException(DISALLOWED_PASSWORD_CHARS);
+            throw new InvalidPasswordException();
         }
     }
 
@@ -102,7 +102,7 @@ public class FiKeyAuth implements Authenticator {
     }
 
     @Override
-    public String finishDeviceAuthentication(String response, String username) throws DeviceCompromisedException, UserDoesNotExistException, DeviceAlreadyRegisteredWithUserException {
+    public String finishDeviceAuthentication(String response, String username) throws DeviceCompromisedException, UserDoesNotExistException {
         U2fUser user = users.getFromUsername(username);
         AuthenticateResponse authenticateResponse = AuthenticateResponse.fromJson(response);
         String jsonRequest = requests.removeAndReturnFromResponse(authenticateResponse);
@@ -114,7 +114,7 @@ public class FiKeyAuth implements Authenticator {
         return registration.toString();
     }
 
-    private DeviceRegistration getDeviceRegistration(U2fUser user, AuthenticateResponse authenticateResponse, AuthenticateRequestData authenticateRequest) throws DeviceCompromisedException, DeviceAlreadyRegisteredWithUserException {
+    private DeviceRegistration getDeviceRegistration(U2fUser user, AuthenticateResponse authenticateResponse, AuthenticateRequestData authenticateRequest) throws DeviceCompromisedException {
         DeviceRegistration registration;
         try {
             registration = u2fManager.finishAuthentication(authenticateRequest, authenticateResponse, users.getDevicesFromUser(user));

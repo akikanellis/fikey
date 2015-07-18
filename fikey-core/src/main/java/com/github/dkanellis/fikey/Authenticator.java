@@ -17,5 +17,5 @@ public interface Authenticator {
 
     String startDeviceAuthentication(String username) throws NoEligibleDevicesException, UserDoesNotExistException;
 
-    String finishDeviceAuthentication(String response, String username) throws DeviceCompromisedException, UserDoesNotExistException, DeviceAlreadyRegisteredWithUserException;
+    String finishDeviceAuthentication(String response, String username) throws DeviceCompromisedException, UserDoesNotExistException;
 }
