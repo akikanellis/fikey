@@ -2,8 +2,8 @@ package com.github.dkanellis.fikeyserverexample;
 
 import com.github.dkanellis.fikey.storage.Requests;
 import com.github.dkanellis.fikey.storage.Users;
-import com.github.dkanellis.fikeyserverexample.views.login.AuthenticateDeviceResource;
-import com.github.dkanellis.fikeyserverexample.views.register.RegisterDeviceResource;
+import com.github.dkanellis.fikeyserverexample.views.login.AuthenticateResource;
+import com.github.dkanellis.fikeyserverexample.views.register.RegisterResource;
 import io.dropwizard.Application;
 import io.dropwizard.assets.AssetsBundle;
 import io.dropwizard.setup.Bootstrap;
@@ -35,7 +35,7 @@ public class FiKeyApplication extends Application<FiKeyConfiguration> {
     @Override
     public void run(FiKeyConfiguration fiKeyConfiguration, Environment environment) throws Exception {
         environment.jersey().setUrlPattern("/api/*");
-        environment.jersey().register(new RegisterDeviceResource());
-        environment.jersey().register(new AuthenticateDeviceResource());
+        environment.jersey().register(new RegisterResource());
+        environment.jersey().register(new AuthenticateResource());
     }
 }

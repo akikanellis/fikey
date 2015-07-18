@@ -33,7 +33,6 @@ public class Users implements U2fUserStorage {
 
     public void init() {
         this.users = new HashSet<>();
-        this.users.add(new User("akis", "")); // TODO remove
         this.userDevices = CacheBuilder.newBuilder().build(new CacheLoader<U2fUser, Map<DeviceRegistration, String>>() {
             @Override
             public Map<DeviceRegistration, String> load(U2fUser user) throws Exception {
@@ -70,11 +69,10 @@ public class Users implements U2fUserStorage {
         }
 
         users.add(user);
-        userDevices.put(user, new HashMap<>());
     }
 
     @Override
-    public void addNewDeviceToUser(U2fUser user, DeviceRegistration device) throws DeviceAlreadyRegisteredWithUserException {
+    public void addDeviceToUser(U2fUser user, DeviceRegistration device) throws DeviceAlreadyRegisteredWithUserException {
         Map<DeviceRegistration, String> devicesFromUser = userDevices.getUnchecked(user);
 
         devicesFromUser.put(device, device.toJson());

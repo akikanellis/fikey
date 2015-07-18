@@ -16,7 +16,7 @@ public interface U2fUserStorage {
 
     void addNewUser(U2fUser user) throws UserAlreadyExistsException;
 
-    void addNewDeviceToUser(U2fUser user, DeviceRegistration device) throws DeviceAlreadyRegisteredWithUserException;
+    void addDeviceToUser(U2fUser user, DeviceRegistration device) throws DeviceAlreadyRegisteredWithUserException;
 
     Iterable<DeviceRegistration> getDevicesFromUser(U2fUser user);
 }
