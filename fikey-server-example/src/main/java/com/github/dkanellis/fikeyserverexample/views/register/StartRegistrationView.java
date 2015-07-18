@@ -16,7 +16,7 @@ public class StartRegistrationView extends View {
     }
 
     public StartRegistrationView(String username, String localizedMessage) {
-        super("startRegistrationFailed.ftl");
+        super("registrationFailed.ftl");
         this.username = username;
         this.extraMessage = localizedMessage;
     }

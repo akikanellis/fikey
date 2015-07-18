@@ -3,8 +3,8 @@ package com.github.dkanellis.fikeyserverexample.views.register;
 
 import com.github.dkanellis.fikey.Authenticator;
 import com.github.dkanellis.fikey.FiKeyAuth;
-import com.github.dkanellis.fikey.exceptions.DeviceAlreadyRegisteredWithUserException;
 import com.github.dkanellis.fikey.exceptions.InvalidPasswordException;
+import com.github.dkanellis.fikey.exceptions.InvalidUsernameException;
 import com.github.dkanellis.fikey.exceptions.UserAlreadyExistsException;
 import com.github.dkanellis.fikey.exceptions.UserDoesNotExistException;
 import com.github.dkanellis.fikeyserverexample.utils.Statics;
@@ -36,6 +36,8 @@ public class RegisterResource {
             return new StartRegistrationView(username, e.getLocalizedMessage());
         } catch (InvalidPasswordException e) {
             return new StartRegistrationView(username, e.getLocalizedMessage());
+        } catch (InvalidUsernameException e) {
+            return new StartRegistrationView(username, e.getLocalizedMessage());
         }
     }
 
@@ -46,15 +48,8 @@ public class RegisterResource {
         try {
             String request = fiKeyAuth.startDeviceRegistration(username);
             return new StartDeviceRegistrationView(username, request);
-        } catch (UserAlreadyExistsException e) {
-            e.printStackTrace(); // TODO show different view
-            return new StartDeviceRegistrationView(username, "N/A");
-        } catch (InvalidPasswordException e) {
-            e.printStackTrace(); // TODO show different view
-            return new StartDeviceRegistrationView(username, "N/A");
         } catch (UserDoesNotExistException e) {
-            e.printStackTrace();
-            return new StartDeviceRegistrationView(username, "N/A");
+            return new StartRegistrationView(username, e.getLocalizedMessage());
         }
     }
 
@@ -67,11 +62,7 @@ public class RegisterResource {
             registrationInfo = fiKeyAuth.finishDeviceRegistration(response, username);
             return new FinishDeviceRegistrationView(username, registrationInfo);
         } catch (UserDoesNotExistException e) {
-            e.printStackTrace();
-            return new FinishDeviceRegistrationView(username, "");
-        } catch (DeviceAlreadyRegisteredWithUserException e) {
-            e.printStackTrace();
-            return new FinishDeviceRegistrationView(username, "");
+            return new StartRegistrationView(username, e.getLocalizedMessage());
         }
     }
 }
