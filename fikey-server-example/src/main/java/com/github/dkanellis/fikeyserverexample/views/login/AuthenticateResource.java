@@ -3,10 +3,7 @@ package com.github.dkanellis.fikeyserverexample.views.login;
 
 import com.github.dkanellis.fikey.Authenticator;
 import com.github.dkanellis.fikey.FiKeyAuth;
-import com.github.dkanellis.fikey.exceptions.DeviceAlreadyRegisteredWithUserException;
-import com.github.dkanellis.fikey.exceptions.DeviceCompromisedException;
-import com.github.dkanellis.fikey.exceptions.NoEligibleDevicesException;
-import com.github.dkanellis.fikey.exceptions.UserDoesNotExistException;
+import com.github.dkanellis.fikey.exceptions.*;
 import com.github.dkanellis.fikeyserverexample.utils.Statics;
 import io.dropwizard.views.View;
 
@@ -18,11 +15,11 @@ import javax.ws.rs.core.MediaType;
  */
 @Path("/")
 @Produces(MediaType.TEXT_HTML)
-public class AuthenticateDeviceResource {
+public class AuthenticateResource {
 
     private Authenticator fiKeyAuth;
 
-    public AuthenticateDeviceResource() {
+    public AuthenticateResource() {
         this.fiKeyAuth = new FiKeyAuth(Statics.APP_ID);
     }
 
@@ -30,14 +27,19 @@ public class AuthenticateDeviceResource {
     @GET
     public View startDeviceAuthentication(@QueryParam("username") String username, @QueryParam("password") String password) {
         try {
-            String authenticateRequestData = fiKeyAuth.startDeviceAuthentication(username, password);
+            fiKeyAuth.authenticateUser(username, password);
+
+            String authenticateRequestData = fiKeyAuth.startDeviceAuthentication(username);
             return new StartDeviceAuthenticationView(username, authenticateRequestData);
         } catch (NoEligibleDevicesException e) {
             e.printStackTrace(); // TODO add views
-            return new StartDeviceAuthenticationView(username, "N/A");
+            return new StartDeviceAuthenticationView(e.getLocalizedMessage(), "N/A");
         } catch (UserDoesNotExistException e) {
             e.printStackTrace();
-            return new StartDeviceAuthenticationView(username, "N/A");
+            return new StartDeviceAuthenticationView(e.getLocalizedMessage(), "N/A");
+        } catch (InvalidPasswordException e) {
+            e.printStackTrace();
+            return new StartDeviceAuthenticationView(e.getLocalizedMessage(), "N/A");
         }
     }
 

@@ -18,11 +18,11 @@ import javax.ws.rs.core.MediaType;
  */
 @Path("/")
 @Produces(MediaType.TEXT_HTML)
-public class RegisterDeviceResource {
+public class RegisterResource {
 
     private Authenticator fiKeyAuth;
 
-    public RegisterDeviceResource() {
+    public RegisterResource() {
         this.fiKeyAuth = new FiKeyAuth(Statics.APP_ID);
     }
 
@@ -31,7 +31,9 @@ public class RegisterDeviceResource {
     @GET
     public View startDeviceRegistration(@QueryParam("username") String username, @QueryParam("password") String password) {
         try {
-            String request = fiKeyAuth.startDeviceRegistration(username, password);
+            fiKeyAuth.registerNewUser(username, password);
+
+            String request = fiKeyAuth.startDeviceRegistration(username);
             return new StartDeviceRegistrationView(username, request);
         } catch (UserAlreadyExistsException e) {
             e.printStackTrace(); // TODO show different view
@@ -49,7 +51,7 @@ public class RegisterDeviceResource {
     @POST
     public View finishDeviceRegistration(@FormParam("tokenResponse") String response,
                                          @FormParam("username") String username) {
-        String registrationInfo = null;
+        String registrationInfo;
         try {
             registrationInfo = fiKeyAuth.finishDeviceRegistration(response, username);
             return new FinishDeviceRegistrationView(username, registrationInfo);
