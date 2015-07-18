@@ -3,8 +3,10 @@ package com.github.dkanellis.fikeyserverexample.views.register;
 
 import com.github.dkanellis.fikey.Authenticator;
 import com.github.dkanellis.fikey.FiKeyAuth;
+import com.github.dkanellis.fikey.exceptions.DeviceAlreadyRegisteredWithUserException;
 import com.github.dkanellis.fikey.exceptions.InvalidPasswordException;
 import com.github.dkanellis.fikey.exceptions.UserAlreadyExistsException;
+import com.github.dkanellis.fikey.exceptions.UserDoesNotExistException;
 import com.github.dkanellis.fikeyserverexample.utils.Statics;
 import io.dropwizard.views.View;
 
@@ -37,6 +39,9 @@ public class RegisterDeviceResource {
         } catch (InvalidPasswordException e) {
             e.printStackTrace(); // TODO show different view
             return new StartDeviceRegistrationView(username, "N/A");
+        } catch (UserDoesNotExistException e) {
+            e.printStackTrace();
+            return new StartDeviceRegistrationView(username, "N/A");
         }
     }
 
@@ -44,7 +49,16 @@ public class RegisterDeviceResource {
     @POST
     public View finishDeviceRegistration(@FormParam("tokenResponse") String response,
                                          @FormParam("username") String username) {
-        String registrationInfo = fiKeyAuth.finishDeviceRegistration(response, username);
-        return new FinishDeviceRegistrationView(username, registrationInfo);
+        String registrationInfo = null;
+        try {
+            registrationInfo = fiKeyAuth.finishDeviceRegistration(response, username);
+            return new FinishDeviceRegistrationView(username, registrationInfo);
+        } catch (UserDoesNotExistException e) {
+            e.printStackTrace();
+            return new FinishDeviceRegistrationView(username, "");
+        } catch (DeviceAlreadyRegisteredWithUserException e) {
+            e.printStackTrace();
+            return new FinishDeviceRegistrationView(username, "");
+        }
     }
 }

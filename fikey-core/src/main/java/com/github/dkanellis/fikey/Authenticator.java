@@ -1,20 +1,17 @@
 package com.github.dkanellis.fikey;
 
-import com.github.dkanellis.fikey.exceptions.DeviceCompromisedException;
-import com.github.dkanellis.fikey.exceptions.InvalidPasswordException;
-import com.github.dkanellis.fikey.exceptions.NoEligibleDevicesException;
-import com.github.dkanellis.fikey.exceptions.UserAlreadyExistsException;
+import com.github.dkanellis.fikey.exceptions.*;
 
 /**
  * @author Dimitris
  */
 public interface Authenticator {
 
-    String startDeviceRegistration(String username, String password) throws UserAlreadyExistsException, InvalidPasswordException;
+    String startDeviceRegistration(String username, String password) throws UserAlreadyExistsException, InvalidPasswordException, UserDoesNotExistException;
 
-    String finishDeviceRegistration(String response, String username);
+    String finishDeviceRegistration(String response, String username) throws UserDoesNotExistException, DeviceAlreadyRegisteredWithUserException;
 
-    String startDeviceAuthentication(String username, String password) throws NoEligibleDevicesException;
+    String startDeviceAuthentication(String username, String password) throws NoEligibleDevicesException, UserDoesNotExistException;
 
-    String finishDeviceAuthentication(String response, String username) throws DeviceCompromisedException;
+    String finishDeviceAuthentication(String response, String username) throws DeviceCompromisedException, UserDoesNotExistException, DeviceAlreadyRegisteredWithUserException;
 }
