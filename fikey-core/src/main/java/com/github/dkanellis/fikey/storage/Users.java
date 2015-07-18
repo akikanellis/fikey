@@ -72,7 +72,7 @@ public class Users implements U2fUserStorage {
     }
 
     @Override
-    public void addDeviceToUser(U2fUser user, DeviceRegistration device) throws DeviceAlreadyRegisteredWithUserException {
+    public void addDeviceToUser(U2fUser user, DeviceRegistration device) {
         Map<DeviceRegistration, String> devicesFromUser = userDevices.getUnchecked(user);
 
         devicesFromUser.put(device, device.toJson());

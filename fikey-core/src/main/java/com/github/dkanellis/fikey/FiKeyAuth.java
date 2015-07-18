@@ -17,10 +17,11 @@ import com.yubico.u2f.data.messages.RegisterResponse;
  */
 public class FiKeyAuth implements Authenticator {
 
+    private final static String DISALLOWED_PASSWORD_CHARS = "&%";
+    private final static int MINIMUM_USERNAME_CHARS = 4;
     private final String appId;
     private final Users users;
     private final Requests requests;
-    private final String disallowedCharacters;
     private U2F u2fManager;
 
     public FiKeyAuth(String appId) {
@@ -28,21 +29,28 @@ public class FiKeyAuth implements Authenticator {
         this.users = Users.getInstance();
         this.requests = Requests.getInstance();
         this.u2fManager = new U2F();
-        this.disallowedCharacters = "&%";
     }
 
     @Override
-    public void registerNewUser(String username, String password) throws UserAlreadyExistsException, InvalidPasswordException {
+    public void registerNewUser(String username, String password) throws UserAlreadyExistsException, InvalidPasswordException, InvalidUsernameException {
         if (passwordIsInvalid(password)) {
-            throw new InvalidPasswordException(disallowedCharacters);
+            throw new InvalidPasswordException(DISALLOWED_PASSWORD_CHARS);
+        }
+
+        if (usernameIsInvalid(username)) {
+            throw new InvalidUsernameException(MINIMUM_USERNAME_CHARS);
         }
 
         U2fUser user = new User(username, password);
         users.addNewUser(user);
     }
 
+    private boolean usernameIsInvalid(String username) {
+        return username.length() < MINIMUM_USERNAME_CHARS;
+    }
+
     @Override
-    public String startDeviceRegistration(String username) throws UserDoesNotExistException, InvalidPasswordException {
+    public String startDeviceRegistration(String username) throws UserDoesNotExistException {
         U2fUser user = users.getFromUsername(username);
 
         Iterable<DeviceRegistration> userDevices = users.getDevicesFromUser(user);
@@ -54,7 +62,7 @@ public class FiKeyAuth implements Authenticator {
     }
 
     @Override
-    public String finishDeviceRegistration(String response, String username) throws UserDoesNotExistException, DeviceAlreadyRegisteredWithUserException {
+    public String finishDeviceRegistration(String response, String username) throws UserDoesNotExistException {
         U2fUser user = users.getFromUsername(username);
 
         RegisterResponse registerResponse = RegisterResponse.fromJson(response);
@@ -70,7 +78,7 @@ public class FiKeyAuth implements Authenticator {
     public void authenticateUser(String username, String password) throws UserDoesNotExistException, InvalidPasswordException {
         U2fUser user = users.getFromUsername(username);
         if (!user.isPasswordCorrect(password)) {
-            throw new InvalidPasswordException(disallowedCharacters);
+            throw new InvalidPasswordException(DISALLOWED_PASSWORD_CHARS);
         }
     }
 
@@ -123,7 +131,7 @@ public class FiKeyAuth implements Authenticator {
             return true;
         }
 
-        for (char c : disallowedCharacters.toCharArray()) {
+        for (char c : DISALLOWED_PASSWORD_CHARS.toCharArray()) {
             if (password.indexOf(c) != -1) {
                 return true;
             }
