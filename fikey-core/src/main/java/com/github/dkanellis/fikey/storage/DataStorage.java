@@ -4,7 +4,6 @@ import com.google.common.cache.CacheBuilder;
 import com.google.common.cache.CacheLoader;
 import com.google.common.cache.LoadingCache;
 import com.yubico.u2f.data.DeviceRegistration;
-import com.yubico.u2f.data.messages.json.Persistable;
 
 import java.util.*;
 
@@ -17,7 +16,7 @@ public class DataStorage implements UserStorage {
 
     private List<FidoUser> users;
     private LoadingCache<String, Map<String, String>> usersOld;
-    private Map<String, String> requests;
+    private Requests requests;
 
     private DataStorage() {
     }
@@ -27,7 +26,6 @@ public class DataStorage implements UserStorage {
     }
 
     public void init() {
-        this.requests = new HashMap<>();
         this.users = new ArrayList<>();
         this.usersOld = CacheBuilder.newBuilder().build(new CacheLoader<String, Map<String, String>>() {
             @Override
@@ -35,16 +33,6 @@ public class DataStorage implements UserStorage {
                 return new HashMap<>();
             }
         });
-    }
-
-    @Override
-    public void addRequest(Persistable request) {
-        requests.put(request.getRequestId(), request.toJson());
-    }
-
-    @Override
-    public String removeRequest(Persistable response) {
-        return requests.remove(response.getRequestId());
     }
 
     public void addDeviceToUser(String username, String key, String value) {

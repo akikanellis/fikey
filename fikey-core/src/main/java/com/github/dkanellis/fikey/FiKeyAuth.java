@@ -5,6 +5,7 @@ import com.github.dkanellis.fikey.exceptions.InvalidPasswordException;
 import com.github.dkanellis.fikey.exceptions.NoEligibleDevicesException;
 import com.github.dkanellis.fikey.exceptions.UserAlreadyExistsException;
 import com.github.dkanellis.fikey.storage.DataStorage;
+import com.github.dkanellis.fikey.storage.Requests;
 import com.yubico.u2f.U2F;
 import com.yubico.u2f.data.DeviceRegistration;
 import com.yubico.u2f.data.messages.AuthenticateRequestData;
@@ -19,12 +20,14 @@ public class FiKeyAuth implements Authenticator {
 
     private final String appId;
     private final DataStorage storage;
+    private final Requests requests;
     private final String disallowedCharacters;
     private U2F u2fManager;
 
     public FiKeyAuth(String appId) {
         this.appId = appId;
         this.storage = DataStorage.getInstance();
+        this.requests = Requests.getInstance();
         this.u2fManager = new U2F();
         this.disallowedCharacters = "&%";
     }
@@ -41,7 +44,7 @@ public class FiKeyAuth implements Authenticator {
 
         Iterable<DeviceRegistration> userDevices = storage.getDevicesFromUser(username);
         RegisterRequestData registerRequest = u2fManager.startRegistration(appId, userDevices);
-        storage.addRequest(registerRequest);
+        requests.add(registerRequest);
 
         return registerRequest.toJson();
     }
@@ -49,7 +52,7 @@ public class FiKeyAuth implements Authenticator {
     @Override
     public String finishDeviceRegistration(String response, String username) {
         RegisterResponse registerResponse = RegisterResponse.fromJson(response);
-        RegisterRequestData registerRequest = RegisterRequestData.fromJson(storage.removeRequest(registerResponse));
+        RegisterRequestData registerRequest = RegisterRequestData.fromJson(requests.removeAndReturnFromResponse(registerResponse));
         DeviceRegistration registration = u2fManager.finishRegistration(registerRequest, registerResponse);
         storage.addDeviceToUser(username, registration.getKeyHandle(), registration.toJson());
 
@@ -61,7 +64,7 @@ public class FiKeyAuth implements Authenticator {
 
         Iterable<DeviceRegistration> userDevices = storage.getDevicesFromUser(username);
         AuthenticateRequestData authenticateRequestData = getAuthenticateRequestData(userDevices);
-        storage.addRequest(authenticateRequestData);
+        requests.add(authenticateRequestData);
 
         return authenticateRequestData.toString();
     }
@@ -77,7 +80,7 @@ public class FiKeyAuth implements Authenticator {
     @Override
     public String finishDeviceAuthentication(String response, String username) throws DeviceCompromisedException {
         AuthenticateResponse authenticateResponse = AuthenticateResponse.fromJson(response);
-        AuthenticateRequestData authenticateRequest = AuthenticateRequestData.fromJson(storage.removeRequest(authenticateResponse));
+        AuthenticateRequestData authenticateRequest = AuthenticateRequestData.fromJson(requests.removeAndReturnFromResponse(authenticateResponse));
 
         DeviceRegistration registration;
         registration = getDeviceRegistration(username, authenticateResponse, authenticateRequest);
