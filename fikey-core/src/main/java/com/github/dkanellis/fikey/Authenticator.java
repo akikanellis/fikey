@@ -7,15 +7,15 @@ import com.github.dkanellis.fikey.exceptions.*;
  */
 public interface Authenticator {
 
-    void registerNewUser(String username, String password) throws UserAlreadyExistsException, InvalidPasswordException;
+    void registerNewUser(String username, String password) throws UserAlreadyExistsException, InvalidUsernameException, InvalidPasswordException;
 
-    String startDeviceRegistration(String username) throws UserAlreadyExistsException, InvalidPasswordException, UserDoesNotExistException;
+    String startDeviceRegistration(String username) throws UserDoesNotExistException;
 
-    String finishDeviceRegistration(String response, String username) throws UserDoesNotExistException, DeviceAlreadyRegisteredWithUserException;
+    String finishDeviceRegistration(String response, String username) throws UserDoesNotExistException;
 
     void authenticateUser(String username, String password) throws UserDoesNotExistException, InvalidPasswordException;
 
     String startDeviceAuthentication(String username) throws NoEligibleDevicesException, UserDoesNotExistException;
 
-    String finishDeviceAuthentication(String response, String username) throws DeviceCompromisedException, UserDoesNotExistException, DeviceAlreadyRegisteredWithUserException;
+    String finishDeviceAuthentication(String response, String username) throws DeviceCompromisedException, UserDoesNotExistException;
 }
