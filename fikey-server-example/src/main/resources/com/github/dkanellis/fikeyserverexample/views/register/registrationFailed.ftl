@@ -11,7 +11,7 @@
         <div class="device">
             Reason:
             <br>
-            <pre class="device-info">${extraMessage}</pre>
+            <pre class="device-info">${exceptionMessage}</pre>
         </div>
         <a href="/register.html" class="btn green">Go back</a>
     </article>

@@ -33,11 +33,11 @@ public class RegisterResource {
             fiKeyAuth.registerNewUser(username, password);
             return new StartRegistrationView(username);
         } catch (UserAlreadyExistsException e) {
-            return new StartRegistrationView(username, e.getLocalizedMessage());
+            return new RegistrationFailedView(username, e);
         } catch (InvalidPasswordException e) {
-            return new StartRegistrationView(username, e.getLocalizedMessage());
+            return new RegistrationFailedView(username, e);
         } catch (InvalidUsernameException e) {
-            return new StartRegistrationView(username, e.getLocalizedMessage());
+            return new RegistrationFailedView(username, e);
         }
     }
 
@@ -49,7 +49,7 @@ public class RegisterResource {
             String request = fiKeyAuth.startDeviceRegistration(username);
             return new StartDeviceRegistrationView(username, request);
         } catch (UserDoesNotExistException e) {
-            return new StartRegistrationView(username, e.getLocalizedMessage());
+            return new RegistrationFailedView(username, e);
         }
     }
 
@@ -57,12 +57,11 @@ public class RegisterResource {
     @POST
     public View finishRegistration(@FormParam("tokenResponse") String response,
                                    @FormParam("username") String username) {
-        String registrationInfo;
         try {
-            registrationInfo = fiKeyAuth.finishDeviceRegistration(response, username);
+            String registrationInfo = fiKeyAuth.finishDeviceRegistration(response, username);
             return new FinishDeviceRegistrationView(username, registrationInfo);
         } catch (UserDoesNotExistException e) {
-            return new StartRegistrationView(username, e.getLocalizedMessage());
+            return new RegistrationFailedView(username, e);
         }
     }
 }

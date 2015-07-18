@@ -8,24 +8,13 @@ import io.dropwizard.views.View;
 public class StartRegistrationView extends View {
 
     private final String username;
-    private String extraMessage;
 
     public StartRegistrationView(String username) {
         super("startRegistrationSucceeded.ftl");
         this.username = username;
     }
 
-    public StartRegistrationView(String username, String localizedMessage) {
-        super("registrationFailed.ftl");
-        this.username = username;
-        this.extraMessage = localizedMessage;
-    }
-
     public String getUsername() {
         return username;
-    }
-
-    public String getExtraMessage() {
-        return extraMessage;
     }
 }
