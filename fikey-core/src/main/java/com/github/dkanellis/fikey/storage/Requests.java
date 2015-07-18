@@ -8,7 +8,7 @@ import java.util.Map;
 /**
  * @author Dimitris
  */
-public class Requests implements RequestStorage {
+public class Requests implements U2fRequestStorage {
 
     private static Requests INSTANCE = new Requests();
 
@@ -26,7 +26,7 @@ public class Requests implements RequestStorage {
     }
 
     @Override
-    public void add(Persistable request) {
+    public void addNewRequest(Persistable request) {
         String key = request.getRequestId();
         String value = request.toJson();
 

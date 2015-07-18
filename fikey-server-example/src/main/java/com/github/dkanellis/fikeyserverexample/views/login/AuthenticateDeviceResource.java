@@ -3,8 +3,10 @@ package com.github.dkanellis.fikeyserverexample.views.login;
 
 import com.github.dkanellis.fikey.Authenticator;
 import com.github.dkanellis.fikey.FiKeyAuth;
+import com.github.dkanellis.fikey.exceptions.DeviceAlreadyRegisteredWithUserException;
 import com.github.dkanellis.fikey.exceptions.DeviceCompromisedException;
 import com.github.dkanellis.fikey.exceptions.NoEligibleDevicesException;
+import com.github.dkanellis.fikey.exceptions.UserDoesNotExistException;
 import com.github.dkanellis.fikeyserverexample.utils.Statics;
 import io.dropwizard.views.View;
 
@@ -33,6 +35,9 @@ public class AuthenticateDeviceResource {
         } catch (NoEligibleDevicesException e) {
             e.printStackTrace(); // TODO add views
             return new StartDeviceAuthenticationView(username, "N/A");
+        } catch (UserDoesNotExistException e) {
+            e.printStackTrace();
+            return new StartDeviceAuthenticationView(username, "N/A");
         }
     }
 
@@ -47,6 +52,12 @@ public class AuthenticateDeviceResource {
             e.printStackTrace();
             String loginInfo = e.getDeviceRegistration().toString();
             return new FinishDeviceAuthenticationView(username, loginInfo, true);
+        } catch (DeviceAlreadyRegisteredWithUserException e) {
+            e.printStackTrace();
+            return new FinishDeviceAuthenticationView(username, "", true);
+        } catch (UserDoesNotExistException e) {
+            e.printStackTrace();
+            return new FinishDeviceAuthenticationView(username, "", true);
         }
     }
 }

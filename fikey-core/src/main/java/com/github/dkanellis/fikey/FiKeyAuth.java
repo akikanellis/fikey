@@ -1,11 +1,9 @@
 package com.github.dkanellis.fikey;
 
-import com.github.dkanellis.fikey.exceptions.DeviceCompromisedException;
-import com.github.dkanellis.fikey.exceptions.InvalidPasswordException;
-import com.github.dkanellis.fikey.exceptions.NoEligibleDevicesException;
-import com.github.dkanellis.fikey.exceptions.UserAlreadyExistsException;
-import com.github.dkanellis.fikey.storage.DataStorage;
+import com.github.dkanellis.fikey.exceptions.*;
 import com.github.dkanellis.fikey.storage.Requests;
+import com.github.dkanellis.fikey.storage.U2fUser;
+import com.github.dkanellis.fikey.storage.Users;
 import com.yubico.u2f.U2F;
 import com.yubico.u2f.data.DeviceRegistration;
 import com.yubico.u2f.data.messages.AuthenticateRequestData;
@@ -19,52 +17,54 @@ import com.yubico.u2f.data.messages.RegisterResponse;
 public class FiKeyAuth implements Authenticator {
 
     private final String appId;
-    private final DataStorage storage;
+    private final Users users;
     private final Requests requests;
     private final String disallowedCharacters;
     private U2F u2fManager;
 
     public FiKeyAuth(String appId) {
         this.appId = appId;
-        this.storage = DataStorage.getInstance();
+        this.users = Users.getInstance();
         this.requests = Requests.getInstance();
         this.u2fManager = new U2F();
         this.disallowedCharacters = "&%";
     }
 
     @Override
-    public String startDeviceRegistration(String username, String password) throws UserAlreadyExistsException, InvalidPasswordException {
-        if (userAlreadyExists(username)) {
-            throw new UserAlreadyExistsException(username);
-        }
+    public String startDeviceRegistration(String username, String password) throws UserDoesNotExistException, InvalidPasswordException {
+        U2fUser user = users.getFromUsername(username);
 
         if (passwordIsInvalid(password)) {
             throw new InvalidPasswordException(disallowedCharacters);
         }
 
-        Iterable<DeviceRegistration> userDevices = storage.getDevicesFromUser(username);
+        Iterable<DeviceRegistration> userDevices = users.getDevicesFromUser(user);
         RegisterRequestData registerRequest = u2fManager.startRegistration(appId, userDevices);
-        requests.add(registerRequest);
+        requests.addNewRequest(registerRequest);
 
         return registerRequest.toJson();
+
     }
 
     @Override
-    public String finishDeviceRegistration(String response, String username) {
+    public String finishDeviceRegistration(String response, String username) throws UserDoesNotExistException, DeviceAlreadyRegisteredWithUserException {
+        U2fUser user = users.getFromUsername(username);
         RegisterResponse registerResponse = RegisterResponse.fromJson(response);
-        RegisterRequestData registerRequest = RegisterRequestData.fromJson(requests.removeAndReturnFromResponse(registerResponse));
-        DeviceRegistration registration = u2fManager.finishRegistration(registerRequest, registerResponse);
-        storage.addDeviceToUser(username, registration.getKeyHandle(), registration.toJson());
+        String jsonRequest = requests.removeAndReturnFromResponse(registerResponse);
+        RegisterRequestData registerRequest = RegisterRequestData.fromJson(jsonRequest);
+        DeviceRegistration device = u2fManager.finishRegistration(registerRequest, registerResponse);
+        users.addNewDeviceToUser(user, device);
 
-        return registration.toString();
+        return device.toString();
     }
 
     @Override
-    public String startDeviceAuthentication(String username, String password) throws NoEligibleDevicesException {
+    public String startDeviceAuthentication(String username, String password) throws NoEligibleDevicesException, UserDoesNotExistException {
+        U2fUser user = users.getFromUsername(username);
 
-        Iterable<DeviceRegistration> userDevices = storage.getDevicesFromUser(username);
+        Iterable<DeviceRegistration> userDevices = users.getDevicesFromUser(user);
         AuthenticateRequestData authenticateRequestData = getAuthenticateRequestData(userDevices);
-        requests.add(authenticateRequestData);
+        requests.addNewRequest(authenticateRequestData);
 
         return authenticateRequestData.toString();
     }
@@ -78,25 +78,26 @@ public class FiKeyAuth implements Authenticator {
     }
 
     @Override
-    public String finishDeviceAuthentication(String response, String username) throws DeviceCompromisedException {
+    public String finishDeviceAuthentication(String response, String username) throws DeviceCompromisedException, UserDoesNotExistException, DeviceAlreadyRegisteredWithUserException {
+        U2fUser user = users.getFromUsername(username);
         AuthenticateResponse authenticateResponse = AuthenticateResponse.fromJson(response);
-        AuthenticateRequestData authenticateRequest = AuthenticateRequestData.fromJson(requests.removeAndReturnFromResponse(authenticateResponse));
+        String jsonRequest = requests.removeAndReturnFromResponse(authenticateResponse);
+        AuthenticateRequestData authenticateRequest = AuthenticateRequestData.fromJson(jsonRequest);
 
-        DeviceRegistration registration;
-        registration = getDeviceRegistration(username, authenticateResponse, authenticateRequest);
-        storage.addDeviceToUser(username, registration.getKeyHandle(), registration.toJson());
+        DeviceRegistration registration = getDeviceRegistration(user, authenticateResponse, authenticateRequest);
+        users.addNewDeviceToUser(user, registration);
 
         return registration.toString();
     }
 
-    private DeviceRegistration getDeviceRegistration(String username, AuthenticateResponse authenticateResponse, AuthenticateRequestData authenticateRequest) throws DeviceCompromisedException {
+    private DeviceRegistration getDeviceRegistration(U2fUser user, AuthenticateResponse authenticateResponse, AuthenticateRequestData authenticateRequest) throws DeviceCompromisedException, DeviceAlreadyRegisteredWithUserException {
         DeviceRegistration registration;
         try {
-            registration = u2fManager.finishAuthentication(authenticateRequest, authenticateResponse, storage.getDevicesFromUser(username));
+            registration = u2fManager.finishAuthentication(authenticateRequest, authenticateResponse, users.getDevicesFromUser(user));
             return registration;
         } catch (com.yubico.u2f.exceptions.DeviceCompromisedException e) {
             registration = e.getDeviceRegistration();
-            storage.addDeviceToUser(username, registration.getKeyHandle(), registration.toJson());
+            users.addNewDeviceToUser(user, registration);
             throw new DeviceCompromisedException(e);
         }
     }

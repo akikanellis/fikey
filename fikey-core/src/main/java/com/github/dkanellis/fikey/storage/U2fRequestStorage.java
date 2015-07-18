@@ -5,8 +5,9 @@ import com.yubico.u2f.data.messages.json.Persistable;
 /**
  * @author Dimitris
  */
-public interface RequestStorage {
-    void add(Persistable request);
+public interface U2fRequestStorage {
+
+    void addNewRequest(Persistable request);
 
     String removeAndReturnFromResponse(Persistable response);
 }
