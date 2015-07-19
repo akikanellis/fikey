@@ -26,12 +26,13 @@ public class AuthenticateResource {
         this.fiKeyAuth = new FiKeyAuth(FiKeyApplication.APP_ID);
     }
 
-    @Path("startAuthentication")
+    @Path("startUserAuthentication")
     @GET
-    public View startRegistration(@QueryParam("username") String username, @QueryParam("password") String password) {
+    public View startUserAuthentication(@QueryParam("username") String username,
+                                        @QueryParam("password") String password) {
         try {
             fiKeyAuth.authenticateUser(username, password);
-            return new StartAuthenticationView(username);
+            return new StartUserAuthenticationView(username);
         } catch (UserDoesNotExistException e) {
             return new AuthenticationFailedView(username, e);
         } catch (InvalidPasswordException e) {

@@ -32,7 +32,7 @@ public class FiKeyAuth implements Authenticator {
     }
 
     @Override
-    public void registerNewUser(String username, String password) throws UserAlreadyExistsException, InvalidPasswordException, InvalidUsernameException {
+    public void registerUser(String username, String password) throws UserAlreadyExistsException, InvalidPasswordException, InvalidUsernameException {
         if (passwordIsInvalid(password)) {
             throw new InvalidPasswordException(DISALLOWED_PASSWORD_CHARS);
         }

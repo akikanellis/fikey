@@ -26,12 +26,12 @@ public class RegisterResource {
         this.fiKeyAuth = new FiKeyAuth(FiKeyApplication.APP_ID);
     }
 
-    @Path("startRegistration")
+    @Path("startUserRegistration")
     @GET
-    public View startRegistration(@QueryParam("username") String username, @QueryParam("password") String password) {
+    public View startUserRegistration(@QueryParam("username") String username, @QueryParam("password") String password) {
         try {
-            fiKeyAuth.registerNewUser(username, password);
-            return new StartRegistrationView(username);
+            fiKeyAuth.registerUser(username, password);
+            return new StartUserRegistrationView(username);
         } catch (UserAlreadyExistsException e) {
             return new RegistrationFailedView(username, e);
         } catch (InvalidPasswordException e) {
@@ -55,8 +55,8 @@ public class RegisterResource {
 
     @Path("finishDeviceRegistration")
     @POST
-    public View finishRegistration(@FormParam("tokenResponse") String response,
-                                   @FormParam("username") String username) {
+    public View finishRegistration(@FormParam("username") String username,
+                                   @FormParam("tokenResponse") String response) {
         try {
             String registrationInfo = fiKeyAuth.finishDeviceRegistration(response, username);
             return new FinishDeviceRegistrationView(username, registrationInfo);
