@@ -7,7 +7,6 @@ import com.github.dkanellis.fikey.exceptions.DeviceCompromisedException;
 import com.github.dkanellis.fikey.exceptions.InvalidPasswordException;
 import com.github.dkanellis.fikey.exceptions.NoEligibleDevicesException;
 import com.github.dkanellis.fikey.exceptions.UserDoesNotExistException;
-import com.github.dkanellis.fikey.storage.Users;
 import com.github.dkanellis.fikeyserverexample.FiKeyApplication;
 import io.dropwizard.views.View;
 
@@ -22,11 +21,9 @@ import javax.ws.rs.core.MediaType;
 public class AuthenticateResource {
 
     private Authenticator fiKeyAuth;
-    private Users users;
 
     public AuthenticateResource() {
         this.fiKeyAuth = new FiKeyAuth(FiKeyApplication.APP_ID);
-        users = Users.getInstance();
     }
 
     @Path("startAuthentication")
