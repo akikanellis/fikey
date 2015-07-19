@@ -8,7 +8,7 @@ import com.github.dkanellis.fikey.exceptions.InvalidPasswordException;
 import com.github.dkanellis.fikey.exceptions.NoEligibleDevicesException;
 import com.github.dkanellis.fikey.exceptions.UserDoesNotExistException;
 import com.github.dkanellis.fikey.storage.Users;
-import com.github.dkanellis.fikeyserverexample.utils.Statics;
+import com.github.dkanellis.fikeyserverexample.FiKeyApplication;
 import io.dropwizard.views.View;
 
 import javax.ws.rs.*;
@@ -25,7 +25,7 @@ public class AuthenticateResource {
     private Users users;
 
     public AuthenticateResource() {
-        this.fiKeyAuth = new FiKeyAuth(Statics.APP_ID);
+        this.fiKeyAuth = new FiKeyAuth(FiKeyApplication.APP_ID);
         users = Users.getInstance();
     }
 

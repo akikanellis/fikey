@@ -7,7 +7,7 @@ import com.github.dkanellis.fikey.exceptions.InvalidPasswordException;
 import com.github.dkanellis.fikey.exceptions.InvalidUsernameException;
 import com.github.dkanellis.fikey.exceptions.UserAlreadyExistsException;
 import com.github.dkanellis.fikey.exceptions.UserDoesNotExistException;
-import com.github.dkanellis.fikeyserverexample.utils.Statics;
+import com.github.dkanellis.fikeyserverexample.FiKeyApplication;
 import io.dropwizard.views.View;
 
 import javax.ws.rs.*;
@@ -23,7 +23,7 @@ public class RegisterResource {
     private Authenticator fiKeyAuth;
 
     public RegisterResource() {
-        this.fiKeyAuth = new FiKeyAuth(Statics.APP_ID);
+        this.fiKeyAuth = new FiKeyAuth(FiKeyApplication.APP_ID);
     }
 
     @Path("startRegistration")

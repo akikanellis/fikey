@@ -15,6 +15,8 @@ import io.dropwizard.views.ViewBundle;
  */
 public class FiKeyApplication extends Application<FiKeyConfiguration> {
 
+    public static final String APP_ID = "https://localhost:8080";
+
     public static void main(String[] args) throws Exception {
         new FiKeyApplication().run(args);
     }
