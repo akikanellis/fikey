@@ -18,7 +18,6 @@ public class Devices implements U2fDeviceStorage {
     private LoadingCache<U2fUser, Map<DeviceRegistration, String>> userDevices;
 
     private Devices() {
-
     }
 
     public static Devices getInstance() {
