@@ -27,16 +27,16 @@ public class Requests implements U2fRequestStorage {
 
     @Override
     public void addNewRequest(Persistable request) {
-        String key = request.getRequestId();
-        String value = request.toJson();
+        String id = request.getRequestId();
+        String info = request.toJson();
 
-        requests.put(key, value);
+        requests.put(id, info);
     }
 
     @Override
     public String removeAndReturnFromResponse(Persistable response) {
-        String keyToRemove = response.getRequestId();
+        String id = response.getRequestId();
 
-        return requests.remove(keyToRemove);
+        return requests.remove(id);
     }
 }

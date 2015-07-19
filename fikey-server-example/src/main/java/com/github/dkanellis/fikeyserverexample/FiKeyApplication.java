@@ -1,5 +1,6 @@
 package com.github.dkanellis.fikeyserverexample;
 
+import com.github.dkanellis.fikey.storage.Devices;
 import com.github.dkanellis.fikey.storage.Requests;
 import com.github.dkanellis.fikey.storage.Users;
 import com.github.dkanellis.fikeyserverexample.views.login.AuthenticateResource;
@@ -30,6 +31,7 @@ public class FiKeyApplication extends Application<FiKeyConfiguration> {
     public void initialize(Bootstrap<FiKeyConfiguration> bootstrap) {
         Users.getInstance().init();
         Requests.getInstance().init();
+        Devices.getInstance().init();
         bootstrap.addBundle(new ViewBundle<>());
         bootstrap.addBundle(new AssetsBundle("/assets", "/", "index.html", "static"));
     }
