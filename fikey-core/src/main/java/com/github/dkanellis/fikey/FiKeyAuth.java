@@ -16,18 +16,43 @@ public class FiKeyAuth implements Authenticator {
 
     private final static String DISALLOWED_PASSWORD_CHARS = "&%";
     private final static int MINIMUM_USERNAME_CHARS = 4;
+
+    private static volatile U2fUserStorage users;
+    private static volatile U2fRequestStorage requests;
+    private static volatile U2fDeviceStorage devices;
+
     private final String appId;
-    private final U2fUserStorage users;
-    private final U2fRequestStorage requests;
-    private final U2fDeviceStorage devices;
+
     private U2F u2fManager;
 
     public FiKeyAuth(String appId) {
         this.appId = appId;
-        this.users = Users.getInstance();
-        this.devices = Devices.getInstance();
-        this.requests = Requests.getInstance();
         this.u2fManager = new U2F();
+    }
+
+    public static void initDefaultStorage() {
+        Users.getInstance().init();
+        Requests.getInstance().init();
+        Devices.getInstance().init();
+
+        users = Users.getInstance();
+        devices = Devices.getInstance();
+        requests = Requests.getInstance();
+    }
+
+    public static void setUserStorage(U2fUserStorage userStorage) {
+        userStorage.init();
+        users = userStorage;
+    }
+
+    public static void setRequestStorage(U2fRequestStorage requestStorage) {
+        requestStorage.init();
+        requests = requestStorage;
+    }
+
+    public static void setDeviceStorage(U2fDeviceStorage deviceStorage) {
+        deviceStorage.init();
+        devices = deviceStorage;
     }
 
     @Override

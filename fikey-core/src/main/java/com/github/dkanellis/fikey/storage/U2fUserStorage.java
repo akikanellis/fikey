@@ -6,7 +6,7 @@ import com.github.dkanellis.fikey.exceptions.UserDoesNotExistException;
 /**
  * @author Dimitris
  */
-public interface U2fUserStorage {
+public interface U2fUserStorage extends Initializable {
 
     U2fUser getFromUsername(String username) throws UserDoesNotExistException;
 

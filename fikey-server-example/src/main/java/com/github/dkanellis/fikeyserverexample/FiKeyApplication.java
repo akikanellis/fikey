@@ -1,8 +1,6 @@
 package com.github.dkanellis.fikeyserverexample;
 
-import com.github.dkanellis.fikey.storage.Devices;
-import com.github.dkanellis.fikey.storage.Requests;
-import com.github.dkanellis.fikey.storage.Users;
+import com.github.dkanellis.fikey.FiKeyAuth;
 import com.github.dkanellis.fikeyserverexample.views.login.AuthenticateResource;
 import com.github.dkanellis.fikeyserverexample.views.register.RegisterResource;
 import io.dropwizard.Application;
@@ -29,9 +27,7 @@ public class FiKeyApplication extends Application<FiKeyConfiguration> {
 
     @Override
     public void initialize(Bootstrap<FiKeyConfiguration> bootstrap) {
-        Users.getInstance().init();
-        Requests.getInstance().init();
-        Devices.getInstance().init();
+        FiKeyAuth.initDefaultStorage();
         bootstrap.addBundle(new ViewBundle<>());
         bootstrap.addBundle(new AssetsBundle("/assets", "/", "index.html", "static"));
     }

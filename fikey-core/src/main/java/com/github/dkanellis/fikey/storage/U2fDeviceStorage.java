@@ -5,7 +5,7 @@ import com.yubico.u2f.data.DeviceRegistration;
 /**
  * @author Dimitris
  */
-public interface U2fDeviceStorage {
+public interface U2fDeviceStorage extends Initializable {
 
     void addDeviceToUser(U2fUser user, DeviceRegistration device);
 
