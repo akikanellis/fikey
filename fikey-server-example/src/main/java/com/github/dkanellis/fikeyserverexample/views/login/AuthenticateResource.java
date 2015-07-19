@@ -7,8 +7,7 @@ import com.github.dkanellis.fikey.exceptions.DeviceCompromisedException;
 import com.github.dkanellis.fikey.exceptions.InvalidPasswordException;
 import com.github.dkanellis.fikey.exceptions.NoEligibleDevicesException;
 import com.github.dkanellis.fikey.exceptions.UserDoesNotExistException;
-import com.github.dkanellis.fikey.storage.Users;
-import com.github.dkanellis.fikeyserverexample.utils.Statics;
+import com.github.dkanellis.fikeyserverexample.FiKeyApplication;
 import io.dropwizard.views.View;
 
 import javax.ws.rs.*;
@@ -22,19 +21,18 @@ import javax.ws.rs.core.MediaType;
 public class AuthenticateResource {
 
     private Authenticator fiKeyAuth;
-    private Users users;
 
     public AuthenticateResource() {
-        this.fiKeyAuth = new FiKeyAuth(Statics.APP_ID);
-        users = Users.getInstance();
+        this.fiKeyAuth = new FiKeyAuth(FiKeyApplication.APP_ID);
     }
 
-    @Path("startAuthentication")
+    @Path("startUserAuthentication")
     @GET
-    public View startRegistration(@QueryParam("username") String username, @QueryParam("password") String password) {
+    public View startUserAuthentication(@QueryParam("username") String username,
+                                        @QueryParam("password") String password) {
         try {
             fiKeyAuth.authenticateUser(username, password);
-            return new StartAuthenticationView(username);
+            return new StartUserAuthenticationView(username);
         } catch (UserDoesNotExistException e) {
             return new AuthenticationFailedView(username, e);
         } catch (InvalidPasswordException e) {

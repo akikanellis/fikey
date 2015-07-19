@@ -1,7 +1,6 @@
 package com.github.dkanellis.fikeyserverexample;
 
-import com.github.dkanellis.fikey.storage.Requests;
-import com.github.dkanellis.fikey.storage.Users;
+import com.github.dkanellis.fikey.FiKeyAuth;
 import com.github.dkanellis.fikeyserverexample.views.login.AuthenticateResource;
 import com.github.dkanellis.fikeyserverexample.views.register.RegisterResource;
 import io.dropwizard.Application;
@@ -15,6 +14,8 @@ import io.dropwizard.views.ViewBundle;
  */
 public class FiKeyApplication extends Application<FiKeyConfiguration> {
 
+    public static final String APP_ID = "https://localhost:8080";
+
     public static void main(String[] args) throws Exception {
         new FiKeyApplication().run(args);
     }
@@ -26,8 +27,7 @@ public class FiKeyApplication extends Application<FiKeyConfiguration> {
 
     @Override
     public void initialize(Bootstrap<FiKeyConfiguration> bootstrap) {
-        Users.getInstance().init();
-        Requests.getInstance().init();
+        FiKeyAuth.initDefaultStorage();
         bootstrap.addBundle(new ViewBundle<>());
         bootstrap.addBundle(new AssetsBundle("/assets", "/", "index.html", "static"));
     }

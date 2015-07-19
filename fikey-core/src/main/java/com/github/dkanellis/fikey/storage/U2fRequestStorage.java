@@ -5,7 +5,7 @@ import com.yubico.u2f.data.messages.json.Persistable;
 /**
  * @author Dimitris
  */
-public interface U2fRequestStorage {
+public interface U2fRequestStorage extends Initializable {
 
     void addNewRequest(Persistable request);
 

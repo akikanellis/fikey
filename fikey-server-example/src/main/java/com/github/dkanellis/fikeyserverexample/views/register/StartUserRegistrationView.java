@@ -5,12 +5,12 @@ import io.dropwizard.views.View;
 /**
  * @author Dimitris
  */
-public class StartRegistrationView extends View {
+public class StartUserRegistrationView extends View {
 
     private final String username;
 
-    public StartRegistrationView(String username) {
-        super("startRegistrationSucceeded.ftl");
+    public StartUserRegistrationView(String username) {
+        super("userRegistrationSucceeded.ftl");
         this.username = username;
     }
 

@@ -7,7 +7,7 @@ import com.github.dkanellis.fikey.exceptions.*;
  */
 public interface Authenticator {
 
-    void registerNewUser(String username, String password) throws UserAlreadyExistsException, InvalidUsernameException, InvalidPasswordException;
+    void registerUser(String username, String password) throws UserAlreadyExistsException, InvalidUsernameException, InvalidPasswordException;
 
     String startDeviceRegistration(String username) throws UserDoesNotExistException;
 
