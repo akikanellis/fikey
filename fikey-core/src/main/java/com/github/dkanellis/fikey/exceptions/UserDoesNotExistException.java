@@ -1,7 +1,7 @@
 package com.github.dkanellis.fikey.exceptions;
 
 /**
- * @author Dimitris
+ * @author Dimitris Kanellis
  */
 public class UserDoesNotExistException extends Exception {
     public UserDoesNotExistException(String username) {

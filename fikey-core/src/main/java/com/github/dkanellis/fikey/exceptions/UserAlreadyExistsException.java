@@ -1,7 +1,7 @@
 package com.github.dkanellis.fikey.exceptions;
 
 /**
- * @author Dimitris
+ * @author Dimitris Kanellis
  */
 public class UserAlreadyExistsException extends Exception {
     public UserAlreadyExistsException(String username) {

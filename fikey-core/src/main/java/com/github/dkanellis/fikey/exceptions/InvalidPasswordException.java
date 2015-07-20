@@ -1,7 +1,7 @@
 package com.github.dkanellis.fikey.exceptions;
 
 /**
- * @author Dimitris
+ * @author Dimitris Kanellis
  */
 public class InvalidPasswordException extends Exception {
     public InvalidPasswordException(String disallowedChars) {

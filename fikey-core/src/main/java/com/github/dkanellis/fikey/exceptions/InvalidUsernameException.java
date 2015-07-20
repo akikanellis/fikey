@@ -1,7 +1,7 @@
 package com.github.dkanellis.fikey.exceptions;
 
 /**
- * @author Dimitris
+ * @author Dimitris Kanellis
  */
 public class InvalidUsernameException extends Exception {
     public InvalidUsernameException(final int minCharacters) {

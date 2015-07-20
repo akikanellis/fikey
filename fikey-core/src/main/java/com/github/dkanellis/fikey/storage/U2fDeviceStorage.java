@@ -7,7 +7,7 @@ import com.yubico.u2f.data.DeviceRegistration;
  * to store a {@link U2fUser}'s  devices in an efficient way, add/update a FIDO {@link DeviceRegistration} to a user
  * and also return all the devices of a particular user.
  *
- * @author Dimitris
+ * @author Dimitris Kanellis
  */
 public interface U2fDeviceStorage extends Initializable {
 

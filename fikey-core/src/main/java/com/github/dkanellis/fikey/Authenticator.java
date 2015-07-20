@@ -17,7 +17,7 @@ import com.github.dkanellis.fikey.exceptions.*;
  * the methods {@link #startDeviceAuthentication(String)} and {@link #finishDeviceAuthentication(String, String)} are
  * to be used to make sure that the device belongs to the user and has not been compromised.
  *
- * @author Dimitris
+ * @author Dimitris Kanellis
  */
 public interface Authenticator {
 

@@ -13,7 +13,7 @@ import java.util.Map;
  * devices in order for the searching to be as efficient as possible and the device Map will be loaded only when needed.
  * The device Map itself holds the device along with its information in Json format.
  *
- * @author Dimitris
+ * @author Dimitris Kanellis
  */
 public class Devices implements U2fDeviceStorage {
 

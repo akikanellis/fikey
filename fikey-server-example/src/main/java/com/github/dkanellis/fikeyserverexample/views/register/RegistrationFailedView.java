@@ -3,7 +3,7 @@ package com.github.dkanellis.fikeyserverexample.views.register;
 import io.dropwizard.views.View;
 
 /**
- * @author Dimitris
+ * @author Dimitris Kanellis
  */
 public class RegistrationFailedView extends View {
 

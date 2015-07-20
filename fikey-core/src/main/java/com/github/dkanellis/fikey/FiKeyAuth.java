@@ -14,7 +14,7 @@ import com.yubico.u2f.data.messages.RegisterResponse;
  * login to be as simple as possible. The class can be instantiated with the default provided storages and settings or
  * each storage and setting can be set separately at a developer's leisure.
  *
- * @author Dimitris
+ * @author Dimitris Kanellis
  */
 public class FiKeyAuth implements Authenticator {
 

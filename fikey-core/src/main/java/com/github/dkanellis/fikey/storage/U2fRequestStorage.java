@@ -8,7 +8,7 @@ import com.yubico.u2f.data.messages.json.Persistable;
  * by using the appropriate response of the device. The request and response should be provided through the FIDO U2F
  * Javascript API.
  *
- * @author Dimitris
+ * @author Dimitris Kanellis
  */
 public interface U2fRequestStorage extends Initializable {
 

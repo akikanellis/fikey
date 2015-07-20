@@ -9,7 +9,7 @@ import com.github.dkanellis.fikey.exceptions.UserDoesNotExistException;
  * {@link U2fUser} to avoid duplicate users. Also the storage needs to be able to efficiently add a new user and find
  * if a user is part of the storage.
  *
- * @author Dimitris
+ * @author Dimitris Kanellis
  */
 public interface U2fUserStorage extends Initializable {
 
