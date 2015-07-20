@@ -1,6 +1,8 @@
 package com.github.dkanellis.fikey.exceptions;
 
 /**
+ * An exception for when either there are no devices registered to the user or all his devices have been compromised.
+ *
  * @author Dimitris
  */
 public class NoEligibleDevicesException extends com.yubico.u2f.exceptions.NoEligableDevicesException {
