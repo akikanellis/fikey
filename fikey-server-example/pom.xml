@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://maven.apache.org/POM/4.0.0"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+
+    <parent>
+        <groupId>com.github.dkanellis</groupId>
+        <artifactId>fikey-parent</artifactId>
+        <version>0.4.0</version>
+    </parent>
+
+    <artifactId>fikey-server-example</artifactId>
+    <name>FiKey server example</name>
+    <packaging>jar</packaging>
+
+    <dependencies>
+        <dependency>
+            <groupId>io.dropwizard</groupId>
+            <artifactId>dropwizard-core</artifactId>
+            <version>${dropwizard.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>io.dropwizard</groupId>
+            <artifactId>dropwizard-assets</artifactId>
+            <version>${dropwizard.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>io.dropwizard</groupId>
+            <artifactId>dropwizard-views</artifactId>
+            <version>${dropwizard.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>io.dropwizard</groupId>
+            <artifactId>dropwizard-views-freemarker</artifactId>
+            <version>${dropwizard.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>com.github.dkanellis</groupId>
+            <artifactId>fikey-core</artifactId>
+            <version>0.4.0</version>
+        </dependency>
+        <!--<dependency>-->
+        <!--<groupId>com.yubico</groupId>-->
+        <!--<artifactId>u2flib-server-core</artifactId>-->
+        <!--<version>${yubicou2f.version}</version>-->
+        <!--</dependency>-->
+    </dependencies>
+
+    <properties>
+        <!-- use UTF-8 for everything -->
+        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+        <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
+        <!-- Versions -->
+        <dropwizard.version>0.8.1</dropwizard.version>
+        <yubicou2f.version>0.14.0</yubicou2f.version>
+    </properties>
+
+
+</project>
