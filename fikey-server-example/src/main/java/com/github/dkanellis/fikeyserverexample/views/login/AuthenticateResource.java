@@ -4,9 +4,9 @@ package com.github.dkanellis.fikeyserverexample.views.login;
 import com.github.dkanellis.fikey.Authenticator;
 import com.github.dkanellis.fikey.FiKeyAuth;
 import com.github.dkanellis.fikey.exceptions.DeviceCompromisedException;
-import com.github.dkanellis.fikey.exceptions.InvalidPasswordException;
 import com.github.dkanellis.fikey.exceptions.NoEligibleDevicesException;
 import com.github.dkanellis.fikey.exceptions.UserDoesNotExistException;
+import com.github.dkanellis.fikey.exceptions.WrongPasswordException;
 import com.github.dkanellis.fikeyserverexample.FiKeyApplication;
 import io.dropwizard.views.View;
 
@@ -35,7 +35,7 @@ public class AuthenticateResource {
             return new StartUserAuthenticationView(username);
         } catch (UserDoesNotExistException e) {
             return new AuthenticationFailedView(username, e);
-        } catch (InvalidPasswordException e) {
+        } catch (WrongPasswordException e) {
             return new AuthenticationFailedView(username, e);
         }
     }

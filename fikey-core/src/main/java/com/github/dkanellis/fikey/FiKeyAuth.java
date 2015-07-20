@@ -99,10 +99,10 @@ public class FiKeyAuth implements Authenticator {
     }
 
     @Override
-    public void authenticateUser(String username, String password) throws UserDoesNotExistException, InvalidPasswordException {
+    public void authenticateUser(String username, String password) throws UserDoesNotExistException, WrongPasswordException {
         U2fUser user = users.getFromUsername(username);
         if (!user.isPasswordCorrect(password)) {
-            throw new InvalidPasswordException();
+            throw new WrongPasswordException(username);
         }
     }
 

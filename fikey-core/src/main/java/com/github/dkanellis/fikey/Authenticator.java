@@ -13,7 +13,7 @@ public interface Authenticator {
 
     String finishDeviceRegistration(String response, String username) throws UserDoesNotExistException;
 
-    void authenticateUser(String username, String password) throws UserDoesNotExistException, InvalidPasswordException;
+    void authenticateUser(String username, String password) throws UserDoesNotExistException, WrongPasswordException;
 
     String startDeviceAuthentication(String username) throws NoEligibleDevicesException, UserDoesNotExistException;
 
