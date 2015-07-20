@@ -11,15 +11,15 @@ import com.yubico.u2f.data.messages.RegisterResponse;
 
 /**
  * The main class of the API which implements all the appropriate functionality in order for the U2F registration and
- * login to be as simple as possible. The class can be instantiated with the default provided storages or each
- * storage can be set separately at a developer's leisure using the three setters.
+ * login to be as simple as possible. The class can be instantiated with the default provided storages and settings or
+ * each storage and setting can be set separately at a developer's leisure.
  *
  * @author Dimitris
  */
 public class FiKeyAuth implements Authenticator {
 
-    private final static String DISALLOWED_PASSWORD_CHARS = "&%";
-    private final static int MINIMUM_USERNAME_CHARS = 4;
+    private static volatile String DISALLOWED_PASSWORD_CHARS = "&%";
+    private static volatile int MINIMUM_USERNAME_CHARS = 4;
 
     private static volatile U2fUserStorage users;
     private static volatile U2fRequestStorage requests;
@@ -57,6 +57,14 @@ public class FiKeyAuth implements Authenticator {
     public static void setDeviceStorage(U2fDeviceStorage deviceStorage) {
         deviceStorage.init();
         devices = deviceStorage;
+    }
+
+    public static void setDisallowedPasswordCharacters(String disallowedPasswordCharacters) {
+        DISALLOWED_PASSWORD_CHARS = disallowedPasswordCharacters;
+    }
+
+    public static void setMinimumUsernameCharacters(final int minimumUsernameCharacters) {
+        MINIMUM_USERNAME_CHARS = minimumUsernameCharacters;
     }
 
     @Override
