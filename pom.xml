@@ -6,7 +6,7 @@
 
     <groupId>com.github.dkanellis</groupId>
     <artifactId>fikey-parent</artifactId>
-    <version>0.4.0</version>
+    <version>0.4.1</version>
     <packaging>pom</packaging>
 
     <name>FiKey parent</name>
@@ -19,7 +19,7 @@
 
 
     <properties>
-        <global.version>0.4.0</global.version>
+        <global.version>0.4.1</global.version>
     </properties>
 
     <build>
