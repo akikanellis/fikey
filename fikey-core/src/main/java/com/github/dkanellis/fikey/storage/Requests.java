@@ -6,6 +6,9 @@ import java.util.HashMap;
 import java.util.Map;
 
 /**
+ * In this {@link U2fRequestStorage} implementation a HashMap is used to store each request's id and information
+ * stored in Json format.
+ *
  * @author Dimitris
  */
 public class Requests implements U2fRequestStorage {

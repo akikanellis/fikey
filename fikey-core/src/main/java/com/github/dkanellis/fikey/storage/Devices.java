@@ -9,6 +9,10 @@ import java.util.HashMap;
 import java.util.Map;
 
 /**
+ * Holds all the devices in the website/application using Google's LoadingCache. Each user is mapped to a Map of
+ * devices in order for the searching to be as efficient as possible and the device Map will be loaded only when needed.
+ * The device Map itself holds the device along with its information in Json format.
+ *
  * @author Dimitris
  */
 public class Devices implements U2fDeviceStorage {

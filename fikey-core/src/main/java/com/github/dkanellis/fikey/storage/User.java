@@ -1,6 +1,8 @@
 package com.github.dkanellis.fikey.storage;
 
 /**
+ * A simple representation of a website/application FIDO user.
+ *
  * @author Dimitris
  */
 public class User implements U2fUser {
