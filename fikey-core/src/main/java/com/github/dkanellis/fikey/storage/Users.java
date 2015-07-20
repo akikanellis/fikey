@@ -7,6 +7,9 @@ import java.util.HashSet;
 import java.util.Set;
 
 /**
+ * A {@link U2fUserStorage} implementation with a Set as it's backbone to ensure unique users and great search
+ * performance.
+ *
  * @author Dimitris Kanellis
  */
 public class Users implements U2fUserStorage {
