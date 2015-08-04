@@ -17,11 +17,6 @@
         <module>fikey-server-example</module>
     </modules>
 
-
-    <properties>
-        <global.version>0.4.1</global.version>
-    </properties>
-
     <build>
         <plugins>
             <plugin>
