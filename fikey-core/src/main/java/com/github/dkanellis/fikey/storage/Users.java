@@ -26,6 +26,7 @@ public class Users implements U2fUserStorage {
         return INSTANCE;
     }
 
+    @Override
     public void init() {
         this.users = new HashSet<>();
     }

@@ -28,6 +28,7 @@ public class Devices implements U2fDeviceStorage {
         return INSTANCE;
     }
 
+    @Override
     public void init() {
         this.userDevices = CacheBuilder.newBuilder().build(new CacheLoader<U2fUser, Map<DeviceRegistration, String>>() {
             @Override
