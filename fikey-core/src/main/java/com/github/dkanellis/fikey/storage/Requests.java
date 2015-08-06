@@ -24,6 +24,7 @@ public class Requests implements U2fRequestStorage {
         return INSTANCE;
     }
 
+    @Override
     public void init() {
         this.requests = new HashMap<>();
     }
