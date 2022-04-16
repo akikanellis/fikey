@@ -1,3 +1,8 @@
+# ⚠️ This project has been deprecated ⚠️
+
+This project contains some very old code that does not reflect my standards anymore. I will be leaving
+the project in an archived state in case it is still useful to someone.
+
 # FiKey
 
 FiKey is an API designed to make it as simple as possible to implement U2F user registration and authentication on a service. There is also an example server provided for demonstrating the usage of the API.
